@@ -31,9 +31,17 @@ def today():
     return dt.datetime.now(TZ).date().isoformat()
 
 
+def instagram_ready():
+    return bool(os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN"))
+
+
 def prepare():
     from .render import render_post, instagram_caption, alt
     from .generate import generate, title_of
+    if not DRY_RUN and not instagram_ready():
+        print("::notice::Instagram secrets (IG_USER_ID, IG_ACCESS_TOKEN) are not set yet, so nothing was prepared. "
+              "Run the workflow with 'Dry run' ticked to test without them.")
+        return
     date = today()
     posted = load(POSTED, [])
     if any(p["date"] == date for p in posted):
@@ -106,6 +114,8 @@ def publish():
     urls = [media_url(date, f) for f in cur["files"]]
     if DRY_RUN:
         print("DRY RUN — would publish:\n" + "\n".join(urls) + "\n\n" + cur["caption"]); return
+    if not instagram_ready():
+        print("::notice::Instagram secrets are not set; not publishing."); return
     wait_public(urls)
     media_id = ig_publish(urls, cur["caption"], cur["alt"])
     posted = load(POSTED, [])
