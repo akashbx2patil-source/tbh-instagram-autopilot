@@ -1,0 +1,1249 @@
+[
+ {
+  "id": "v1",
+  "theme": "verify",
+  "kind": "carousel",
+  "link": "/regulators",
+  "data": {
+   "kicker": "Before you deposit",
+   "title": "How to check a forex broker in 5 minutes",
+   "slides": [
+    [
+     "Find the legal entity",
+     "Scroll to the website footer. Note the exact company name and the licence number it claims. No entity name is your first red flag."
+    ],
+    [
+     "Go to the regulator, not the broker",
+     "Open the regulator's own register in a new tab. Never trust a licence badge or a PDF the broker sends you."
+    ],
+    [
+     "Match every detail",
+     "Company name, licence number, website domain and phone number should all match the register entry. One mismatch can mean a clone."
+    ],
+    [
+     "Check the status",
+     "Authorised, revoked or expired are very different things. A licence that used to exist protects you from nothing today."
+    ],
+    [
+     "Search the warning lists",
+     "Run the name through the FCA Warning List, IOSCO I-SCAN and your local regulator's alerts. Two minutes, and it catches a lot."
+    ]
+   ]
+  },
+  "ig": "Most bad broker experiences start before the first trade. They start at the deposit.\n\nHere is the 5-minute check we would run on any broker before sending a single dollar: entity, register, match, status, warning lists.\n\nSave this for the next time a broker looks too good.",
+  "x": "Five-minute broker check before you deposit:\n\n1. Find the legal entity\n2. Open the regulator's register yourself\n3. Match name, licence no. and domain\n4. Check the licence status\n5. Search the warning lists",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "b3",
+  "theme": "basics",
+  "kind": "statement",
+  "link": "/learn",
+  "data": {
+   "kicker": "Leverage",
+   "title": "Leverage does not make you a better trader. It makes every mistake bigger, and faster.",
+   "sub": "It increases position size, not skill. The same move that doubles a stake can wipe it out."
+  },
+  "ig": "Leverage increases the size of your position, not the quality of your decisions.\n\nThat is why major regulators cap it for retail traders. Before you use it, work out what a 1% move against you would do to your account.",
+  "x": "Leverage does not make you a better trader.\n\nIt makes every mistake bigger, and faster.",
+  "tags": [
+   "#leverage"
+  ]
+ },
+ {
+  "id": "s2",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/scam-alerts",
+  "data": {
+   "quote": "Guaranteed 10% a month, zero risk.",
+   "meaning": "No regulated broker can promise returns. Markets do not offer guarantees, so whoever is offering one is selling something else.",
+   "action": "Close the chat. Search the name on the regulator's warning list."
+  },
+  "ig": "\"Risk-free\" and \"guaranteed\" are the two most expensive words in trading.\n\nA regulated broker gives you a risk warning, not a promise. When someone guarantees a monthly return, the product being sold is the promise itself.",
+  "x": "\"Risk-free\" and \"guaranteed\" are the two most expensive words in trading.\n\nA regulated broker gives you a risk warning, not a promise.",
+  "tags": [
+   "#investmentscam"
+  ]
+ },
+ {
+  "id": "r1",
+  "theme": "reg",
+  "kind": "carousel",
+  "link": "/regulation",
+  "data": {
+   "kicker": "Regulation explained",
+   "title": "What a strong regulator actually does for you",
+   "slides": [
+    [
+     "Segregated client money",
+     "Your funds are held separately from the broker's own money, so they are not used to run the business."
+    ],
+    [
+     "Capital requirements",
+     "The broker must hold minimum capital, which lowers the risk of sudden collapse."
+    ],
+    [
+     "A complaints route",
+     "If the broker will not resolve a dispute, you can escalate to the regulator or an ombudsman."
+    ],
+    [
+     "Compensation, in some places",
+     "Schemes such as the FSCS (UK) or Cyprus's ICF may cover eligible clients if a firm fails."
+    ],
+    [
+     "Retail protections",
+     "Leverage limits and negative balance protection under rules such as ESMA (EU) and ASIC (Australia)."
+    ]
+   ]
+  },
+  "ig": "A licence is not a stamp. It is a set of obligations a broker must keep.\n\nThe strength of those obligations varies hugely by regulator. That is why who regulates your broker matters more than whether it is \"regulated\" somewhere.",
+  "x": "A licence is not a stamp. It is a set of obligations.\n\nSegregated funds, capital rules, complaints routes, compensation schemes and retail protections vary a lot by regulator.",
+  "tags": [
+   "#financialregulation"
+  ]
+ },
+ {
+  "id": "b1",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Pip",
+   "definition": "The standard unit of price movement in forex. For most pairs it is the fourth decimal place (0.0001).",
+   "example": "EUR/USD 1.1000 → 1.1005 is a 5-pip move. For JPY pairs a pip is the second decimal (0.01)."
+  },
+  "ig": "Every forex cost and result is measured in pips, so it pays to get this one right.\n\nFor most pairs a pip is 0.0001. For JPY pairs it is 0.01.",
+  "x": "Pip: the standard unit of forex price movement.\n\n0.0001 for most pairs. 0.01 for JPY pairs.",
+  "tags": []
+ },
+ {
+  "id": "s1",
+  "theme": "scam",
+  "kind": "carousel",
+  "link": "/scam-alerts",
+  "data": {
+   "kicker": "Scam watch",
+   "title": "8 signs your 'broker' is not really a broker",
+   "slides": [
+    [
+     "They guarantee profits",
+     "No regulated broker can promise returns. A guarantee is a sales line, not a product."
+    ],
+    [
+     "An 'account manager' calls daily",
+     "Constant calls pushing you to trade or deposit more are a sales operation, not a service."
+    ],
+    [
+     "The bonus has strings",
+     "Volume requirements that lock your deposit until you trade a huge amount are a trap."
+    ],
+    [
+     "The licence is not on the register",
+     "If the regulator's own site does not list them, the badge on their site means nothing."
+    ],
+    [
+     "They pressure you to top up",
+     "\"Deposit now to recover your losses\" is how small losses become large ones."
+    ],
+    [
+     "Withdrawals stall 'under review'",
+     "A real broker pays out in hours to days. Weeks of silence is a warning."
+    ],
+    [
+     "You must pay to withdraw",
+     "A 'tax' or 'release fee' paid upfront is the classic last step of a scam."
+    ],
+    [
+     "Crypto-only deposits",
+     "Payments that cannot be reversed suit the broker, not you."
+    ]
+   ]
+  },
+  "ig": "The broker, not the market, is often the real risk.\n\nThese eight patterns show up again and again in complaints. One on its own is a reason to slow down. Two or more is a reason to walk away.\n\nSave this and share it with someone who is just starting out.",
+  "x": "8 signs your 'broker' is not a broker:\n\n1. Guaranteed profits\n2. Daily sales calls\n3. Bonus that locks your deposit\n4. Licence not on the register\n5. Pressure to top up\n6. Withdrawals 'under review'\n7. Fees to withdraw\n8. Crypto-only deposits",
+  "tags": [
+   "#forexscam"
+  ]
+ },
+ {
+  "id": "v2",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/brokers",
+  "data": {
+   "kicker": "Meet TrustBrokerHub",
+   "title": "38,000+ brokers and exchanges. One question first: who regulates them?",
+   "sub": "Real regulatory data, a published scoring method and moderated trader reviews. Research before you deposit."
+  },
+  "ig": "Choosing a broker is a safety decision before it is a features decision.\n\nTrustBrokerHub tracks 38,000+ forex brokers and crypto exchanges against 112 regulators in 140 countries, so you can see who actually holds a licence before you hand over money.\n\nSearch any broker free — link in bio.",
+  "x": "Choosing a broker is a safety decision before it is a features decision.\n\nWe track 38,000+ brokers and exchanges against 112 regulators. Look one up before you deposit.",
+  "tags": []
+ },
+ {
+  "id": "b2",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Spread",
+   "definition": "The gap between the buy (ask) and sell (bid) price. You pay it the moment you open a trade.",
+   "example": "Bid 1.1000, ask 1.1002 → a 2-pip spread. Every trade starts that far behind."
+  },
+  "ig": "The spread is the first cost you pay on every trade, and it is easy to ignore.\n\nTight advertised spreads are often \"from\" figures. Check the typical spread at the times you actually trade.",
+  "x": "The spread is the first cost you pay on every trade.\n\n\"From 0.0 pips\" is a minimum, not an average.",
+  "tags": []
+ },
+ {
+  "id": "r4",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/learn",
+  "data": {
+   "number": "30:1",
+   "label": "Max retail leverage on major FX pairs",
+   "body": "Under ESMA rules in the EU and ASIC rules in Australia. Lower caps apply to minor pairs, commodities, shares and crypto.",
+   "foot": "Offered 500:1? Ask which entity you are signing with."
+  },
+  "ig": "Major regulators cap retail leverage for a reason: high leverage turns small moves into account-ending ones.\n\nIf a broker offers you far more than 30:1 on majors, you are likely being onboarded to a different, often offshore, entity with weaker protections.",
+  "x": "30:1 is the max retail leverage on major FX pairs under ESMA (EU) and ASIC (Australia) rules.\n\nOffered 500:1? Check which entity you are signing with.",
+  "tags": [
+   "#ESMA",
+   "#ASIC"
+  ]
+ },
+ {
+  "id": "s3",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/learn",
+  "data": {
+   "quote": "Your withdrawal is under review.",
+   "meaning": "Normal checks take hours to a few business days. Weeks of 'review' with no clear reason is how money gets held.",
+   "action": "Ask in writing for the exact reason and date. Keep every message."
+  },
+  "ig": "A trustworthy broker pays you out in hours to days. Weeks of \"under review\" is not a delay, it is a warning.\n\nIf it happens to you: ask in writing for the specific reason and a date, keep screenshots, and escalate to the regulator if the broker is licensed.",
+  "x": "A trustworthy broker pays out in hours to days.\n\nWeeks of \"under review\" is not a delay. It is a warning.",
+  "tags": [
+   "#withdrawal"
+  ]
+ },
+ {
+  "id": "b4",
+  "theme": "basics",
+  "kind": "carousel",
+  "link": "/learn",
+  "data": {
+   "kicker": "The maths",
+   "title": "What a 1% move does at different leverage",
+   "slides": [
+    [
+     "The setup",
+     "You put $1,000 of margin into a position. The market moves 1% against you."
+    ],
+    [
+     "At 1:10",
+     "Position: $10,000. A 1% move = $100. You lose 10% of your margin."
+    ],
+    [
+     "At 1:30",
+     "Position: $30,000. A 1% move = $300. You lose 30% of your margin."
+    ],
+    [
+     "At 1:100",
+     "Position: $100,000. A 1% move = $1,000. Your margin is gone."
+    ],
+    [
+     "At 1:500",
+     "Position: $500,000. A 0.2% move = $1,000. Your margin is gone in a move many currencies make in an ordinary day."
+    ]
+   ]
+  },
+  "ig": "Run these numbers before you choose a leverage setting.\n\nThe same 1% move is a bad day at 1:10 and the end of the account at 1:100. Simplified example — excludes spreads, swaps and fees.",
+  "x": "$1,000 margin. Market moves 1% against you.\n\n1:10 → lose $100\n1:30 → lose $300\n1:100 → lose $1,000\n\nAt 1:500, a 0.2% move does the same.",
+  "tags": [
+   "#leverage"
+  ]
+ },
+ {
+  "id": "v7",
+  "theme": "verify",
+  "kind": "checklist",
+  "link": "/regulation",
+  "data": {
+   "title": "Licence check: all five must match",
+   "items": [
+    "Company name — exact match, not 'similar'",
+    "Licence number — on the regulator's site",
+    "Website domain — listed in the register entry",
+    "Status — currently authorised, not revoked",
+    "Entity — the one named in your client agreement"
+   ],
+   "note": "One mismatch is enough to stop."
+  },
+  "ig": "A licence number on a website proves nothing on its own. Scammers copy real ones.\n\nAll five of these should match the regulator's register before you deposit. If even one does not, stop and ask why.\n\nSave this checklist.",
+  "x": "A licence number on a website proves nothing on its own. Scammers copy real ones.\n\nName, licence no., domain, status and entity should all match the regulator's register.",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "s5",
+  "theme": "scam",
+  "kind": "carousel",
+  "link": "/scam-alerts",
+  "data": {
+   "kicker": "Scam pattern",
+   "title": "Clone firms: when scammers copy a real, regulated broker",
+   "slides": [
+    [
+     "How it works",
+     "Scammers copy a genuine firm's name, licence number and branding, then build a lookalike website."
+    ],
+    [
+     "Why it convinces",
+     "You check the register, the name is there, the number matches. It passes a quick check."
+    ],
+    [
+     "Spot the gap",
+     "The register lists the real firm's website, email and phone. The clone's contact details will not match."
+    ],
+    [
+     "Contact the firm yourself",
+     "Use only the phone number or website shown on the regulator's register, never the one you were sent."
+    ],
+    [
+     "Check the warnings",
+     "Regulators such as the FCA (UK) publish clone warnings. Search the firm's name plus 'clone'."
+    ]
+   ]
+  },
+  "ig": "A real licence number on a fake website is still a fake website.\n\nClone firms borrow the identity of a genuinely regulated broker. The fix is simple: check the contact details on the register, not just the name.",
+  "x": "A real licence number on a fake website is still a fake website.\n\nClone firms copy regulated brokers. Check the contact details on the register, not just the name.",
+  "tags": [
+   "#clonefirm"
+  ]
+ },
+ {
+  "id": "r2",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/regulation",
+  "data": {
+   "number": "£85,000",
+   "label": "FSCS protection limit (UK)",
+   "body": "Eligible clients of a failed FCA-authorised firm may be compensated up to this amount per person, per firm.",
+   "foot": "It covers firm failure — not trading losses."
+  },
+  "ig": "The UK's Financial Services Compensation Scheme can step in if an FCA-authorised investment firm fails and cannot return client money.\n\nTwo things to know: eligibility rules apply, and it never covers losses from your own trading.",
+  "x": "£85,000: the FSCS limit per person, per firm, if an FCA-authorised firm fails.\n\nIt covers firm failure — never trading losses.",
+  "tags": [
+   "#FCA"
+  ]
+ },
+ {
+  "id": "b7",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Lot size",
+   "definition": "The number of units in a trade. Standard = 100,000. Mini = 10,000. Micro = 1,000.",
+   "example": "On EUR/USD, 1 pip is roughly $10 per standard lot, $1 per mini lot and $0.10 per micro lot."
+  },
+  "ig": "Lot size decides how much each pip is worth to you.\n\nStarting with micro lots keeps each mistake small while you learn how a broker executes in live conditions.",
+  "x": "Lot sizes:\nStandard = 100,000 units (~$10/pip on EUR/USD)\nMini = 10,000 (~$1/pip)\nMicro = 1,000 (~$0.10/pip)",
+  "tags": []
+ },
+ {
+  "id": "s4",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/scam-alerts",
+  "data": {
+   "quote": "Pay the tax first to release your funds.",
+   "meaning": "Legitimate brokers deduct fees from your balance. A fee you must send in fresh money before a withdrawal is almost always the final stage of a scam.",
+   "action": "Do not pay. Contact your bank and report it to the regulator."
+  },
+  "ig": "If you have to send new money to get your old money back, the old money is probably already gone.\n\nA \"tax\", \"release fee\" or \"anti-money-laundering deposit\" demanded upfront is the classic last step. Paying it does not unlock anything. It only adds to the loss.",
+  "x": "If you have to send new money to get your old money back, the old money is probably already gone.\n\nNever pay a 'release fee' to withdraw.",
+  "tags": [
+   "#fraudprevention"
+  ]
+ },
+ {
+  "id": "r7",
+  "theme": "reg",
+  "kind": "carousel",
+  "link": "/regulators",
+  "data": {
+   "kicker": "Bookmark this",
+   "title": "8 official places to check a licence",
+   "slides": [
+    [
+     "FCA Financial Services Register",
+     "United Kingdom. Also check the FCA Warning List for unauthorised firms and clones."
+    ],
+    [
+     "ASIC professional registers",
+     "Australia. Search the firm's AFS licence on ASIC's own site."
+    ],
+    [
+     "CySEC regulated entities",
+     "Cyprus and much of the EU retail market."
+    ],
+    [
+     "BaFin company database",
+     "Germany's federal financial supervisor."
+    ],
+    [
+     "NFA BASIC",
+     "United States. Shows CFTC registration and NFA membership."
+    ],
+    [
+     "FSA Japan registered lists",
+     "Separate lists for FX dealers and crypto-asset exchanges."
+    ],
+    [
+     "MAS Financial Institutions Directory",
+     "Singapore. Pair it with the MAS Investor Alert List."
+    ],
+    [
+     "FSCA FSP search",
+     "South Africa. Every authorised provider has an FSP number."
+    ]
+   ]
+  },
+  "ig": "Never verify a broker using a link the broker gave you.\n\nThese are the official registers we check most. Go to the regulator's site directly, search the exact entity name, and match the contact details.\n\nOur regulator database links to 112 of them.",
+  "x": "Official places to check a licence:\n\nFCA Register (UK)\nASIC (Australia)\nCySEC (Cyprus)\nBaFin (Germany)\nNFA BASIC (US)\nFSA (Japan)\nMAS (Singapore)\nFSCA (South Africa)",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "b5",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Margin call",
+   "definition": "A warning that your account equity has fallen too close to the margin needed to keep positions open.",
+   "example": "Ignore it and the broker may close positions automatically, often at the worst moment."
+  },
+  "ig": "A margin call is not a request for advice. It is your last warning before positions start closing.\n\nThe best response is usually decided before it happens: smaller positions and a stop-loss.",
+  "x": "A margin call is your last warning before positions start closing automatically.\n\nDecide your response before it happens.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "v9",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/learn",
+  "data": {
+   "kicker": "One simple test",
+   "title": "Withdraw before you trust.",
+   "sub": "Start with a small deposit and request a small withdrawal. How a broker pays you out tells you more than any feature list."
+  },
+  "ig": "Nothing tests a broker like a withdrawal.\n\nBefore you fund an account properly, deposit a small amount and ask for some of it back. A trustworthy broker processes it promptly. Weeks of \"processing\" is not a delay, it is a warning.",
+  "x": "Nothing tests a broker like a withdrawal.\n\nDeposit small. Withdraw small. Then decide.",
+  "tags": [
+   "#withdrawal"
+  ]
+ },
+ {
+  "id": "s6",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/scam-alerts",
+  "data": {
+   "quote": "We can recover your lost funds — small fee upfront.",
+   "meaning": "Recovery scams target people who have already been scammed, often using leaked victim lists. The upfront fee is the scam.",
+   "action": "Go to your bank, the police and the regulator directly. They do not charge."
+  },
+  "ig": "The second scam often arrives right after the first.\n\nSo-called recovery agents contact victims promising to get their money back for a fee. Genuine routes — your bank, the police, the regulator — do not ask you to pay upfront.",
+  "x": "The second scam often arrives right after the first.\n\n'Recovery agents' who charge upfront to get your money back are the next scam.",
+  "tags": [
+   "#recoveryscam"
+  ]
+ },
+ {
+  "id": "r8",
+  "theme": "reg",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Negative balance protection",
+   "definition": "A rule that stops a retail client's account going below zero, so you cannot lose more than you deposited.",
+   "example": "Required for retail clients under ESMA (EU), FCA (UK) and ASIC (Australia) rules. Not guaranteed with offshore entities."
+  },
+  "ig": "On a fast market gap, an account can go below zero. Negative balance protection means the broker absorbs that, not you.\n\nIt is mandatory for retail clients in several major jurisdictions. Elsewhere, check the client agreement.",
+  "x": "Negative balance protection: you cannot lose more than you deposited.\n\nMandatory for retail clients under ESMA, FCA and ASIC rules. Not guaranteed offshore.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "b8",
+  "theme": "basics",
+  "kind": "carousel",
+  "link": "/compare",
+  "data": {
+   "kicker": "Trading costs",
+   "title": "The real cost of a trade has three parts",
+   "slides": [
+    [
+     "The spread",
+     "The gap between buy and sell. Paid on every trade, the moment you open it."
+    ],
+    [
+     "The commission",
+     "Charged per lot on many raw or ECN accounts, often in exchange for tighter spreads."
+    ],
+    [
+     "The swap",
+     "The overnight fee for holding a position. Easy to miss, adds up over weeks."
+    ],
+    [
+     "Compare all three",
+     "A 'zero-spread' account with a high commission can cost more than a standard account. Add them up."
+    ]
+   ]
+  },
+  "ig": "The headline spread is only part of your cost.\n\nTo compare brokers fairly, add spread, commission and swap for the way you actually trade.",
+  "x": "The headline spread is only part of your cost.\n\nSpread + commission + swap. Compare all three.",
+  "tags": [
+   "#tradingcosts"
+  ]
+ },
+ {
+  "id": "s7",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/learn",
+  "data": {
+   "quote": "I'm your personal account manager. Let's grow your account today.",
+   "meaning": "A broker that profits when you deposit more has hired a salesperson, not an adviser. Daily calls and urgency are the tell.",
+   "action": "Say no in writing. If the calls continue, treat it as a red flag."
+  },
+  "ig": "An \"account manager\" who calls every day is not working for you.\n\nUrgency, pressure to deposit and tips on what to trade usually mean a sales team on commission. That is a sales operation, not a brokerage.",
+  "x": "An \"account manager\" who calls every day is not working for you.\n\nThat is a sales operation, not a brokerage.",
+  "tags": [
+   "#forexscam"
+  ]
+ },
+ {
+  "id": "r3",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/regulation",
+  "data": {
+   "number": "€20,000",
+   "label": "Cyprus Investor Compensation Fund limit",
+   "body": "Eligible retail clients of a failed CySEC-licensed investment firm may be covered up to this amount.",
+   "foot": "Many EU brokers are licensed in Cyprus."
+  },
+  "ig": "Many brokers that serve European clients are licensed by CySEC in Cyprus.\n\nIf such a firm fails, eligible retail clients may claim from the Investor Compensation Fund up to €20,000. It is a backstop for firm failure, not a guarantee against losses.",
+  "x": "€20,000: the Cyprus Investor Compensation Fund limit for eligible clients of a failed CySEC-licensed firm.\n\nA backstop for failure, not losses.",
+  "tags": [
+   "#CySEC"
+  ]
+ },
+ {
+  "id": "v3",
+  "theme": "verify",
+  "kind": "checklist",
+  "link": "/methodology",
+  "data": {
+   "title": "What goes into a Trust Score",
+   "items": [
+    "Regulation — who licenses the broker, and where",
+    "Reviews — moderated feedback from real traders",
+    "Transparency — fees, entity and terms disclosed",
+    "Footprint — how established the business is",
+    "Complaints — what goes wrong, and how often"
+   ],
+   "note": "Formula and weights are published. No pay-to-rank."
+  },
+  "ig": "A score is only useful if you can see how it is made.\n\nEvery broker on TrustBrokerHub is scored on five factors: regulation, reviews, transparency, footprint and complaints. The formula and weights are public on our methodology page.\n\nNo broker can pay to move up.",
+  "x": "Every broker on TrustBrokerHub is scored on 5 factors: regulation, reviews, transparency, footprint and complaints.\n\nThe formula and weights are public. No pay-to-rank.",
+  "tags": [
+   "#transparency"
+  ]
+ },
+ {
+  "id": "s9",
+  "theme": "scam",
+  "kind": "carousel",
+  "link": "/scam-alerts",
+  "data": {
+   "kicker": "Scam pattern",
+   "title": "The 'online friend' investment scam, step by step",
+   "slides": [
+    [
+     "A stranger says hello",
+     "A wrong-number text, a dating match or a social media message. Friendly, patient, no rush."
+    ],
+    [
+     "Trust builds over weeks",
+     "Daily chats, shared photos, life stories. Money is not mentioned yet."
+    ],
+    [
+     "Then the 'opportunity'",
+     "They show you their profits on a trading platform and offer to teach you."
+    ],
+    [
+     "Small wins, bigger deposits",
+     "The fake platform shows gains. You may even withdraw a little — that is the hook."
+    ],
+    [
+     "The exit",
+     "Big withdrawal requests meet fees, 'taxes' or silence. The platform and the friend disappear."
+    ]
+   ]
+  },
+  "ig": "The most effective scams are slow.\n\nThis pattern can run for weeks before money is mentioned, and the trading platform is usually fake from day one. If someone you have only met online starts teaching you to trade, stop and check the platform independently.",
+  "x": "The most effective scams are slow.\n\nIf someone you only know online starts teaching you to trade on their platform, stop and check the platform independently.",
+  "tags": [
+   "#romancescam"
+  ]
+ },
+ {
+  "id": "b6",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Swap (overnight fee)",
+   "definition": "Interest charged or paid for holding a leveraged position past the daily rollover time.",
+   "example": "Many brokers charge three days' swap on one weekday to cover the weekend. Check which day."
+  },
+  "ig": "Holding trades overnight has a cost most beginners miss.\n\nSwaps can be small per day and large over weeks. Check the swap rates in your platform before holding a position for long.",
+  "x": "Swap: the fee for holding a leveraged position overnight.\n\nSmall per day. Not small over weeks.",
+  "tags": []
+ },
+ {
+  "id": "r10",
+  "theme": "reg",
+  "kind": "mythfact",
+  "link": "/regulation",
+  "data": {
+   "myth": "Any licence gives the same protection as an FCA or ASIC licence.",
+   "fact": "Protections differ widely. Some offshore licences involve little ongoing supervision, no leverage limits and no compensation scheme."
+  },
+  "ig": "\"Regulated\" is not one thing.\n\nA licence from a major regulator comes with supervision, capital rules and complaint routes. Some offshore registrations come with very little. Always ask who regulates the broker, not just whether it is regulated.",
+  "x": "\"Regulated\" is not one thing.\n\nAsk who regulates the broker, not just whether it is regulated.",
+  "tags": [
+   "#financialregulation"
+  ]
+ },
+ {
+  "id": "s8",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/learn",
+  "data": {
+   "quote": "Deposit today and we'll double it.",
+   "meaning": "Big bonuses usually come with trading-volume conditions that lock your own deposit until you trade far more than you planned.",
+   "action": "Read the bonus terms before you accept. Or decline the bonus."
+  },
+  "ig": "A 100% bonus is rarely free money. It is often a lock on your own money.\n\nMany bonus offers require you to trade a large volume before you can withdraw anything — including your original deposit. Many regulators restrict bonuses for retail clients for this reason.",
+  "x": "A 100% bonus is rarely free money. It is often a lock on your own money.\n\nRead the withdrawal conditions before you accept one.",
+  "tags": [
+   "#forexscam"
+  ]
+ },
+ {
+  "id": "b17",
+  "theme": "basics",
+  "kind": "carousel",
+  "link": "/tools",
+  "data": {
+   "kicker": "Worked examples",
+   "title": "How much is a pip worth to you?",
+   "slides": [
+    [
+     "The rule",
+     "Pip value depends on your lot size and the pair. For pairs quoted in USD, it is simple."
+    ],
+    [
+     "1 standard lot of EUR/USD",
+     "100,000 units × 0.0001 = about $10 per pip."
+    ],
+    [
+     "1 mini lot of EUR/USD",
+     "10,000 units × 0.0001 = about $1 per pip."
+    ],
+    [
+     "1 micro lot of EUR/USD",
+     "1,000 units × 0.0001 = about $0.10 per pip."
+    ],
+    [
+     "So a 20-pip stop costs...",
+     "About $200 on a standard lot, $20 on a mini, $2 on a micro. Size the trade to the loss you accept."
+    ]
+   ]
+  },
+  "ig": "Sizing a trade starts with one question: how much is each pip worth to me?\n\nWork it out before you enter, and the stop-loss becomes a number you chose rather than a surprise.",
+  "x": "Pip value on EUR/USD:\n\nStandard lot ≈ $10\nMini lot ≈ $1\nMicro lot ≈ $0.10\n\nA 20-pip stop is $200, $20 or $2. Size to the loss you accept.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "r12",
+  "theme": "reg",
+  "kind": "carousel",
+  "link": "/compare",
+  "data": {
+   "kicker": "The fine print",
+   "title": "Same brand, different broker: why the entity matters",
+   "slides": [
+    [
+     "One brand, many entities",
+     "Many global brokers run separate companies in different countries, each with its own licence."
+    ],
+    [
+     "Your country decides",
+     "Where you live often decides which entity onboards you — and which rules protect you."
+    ],
+    [
+     "Protections change",
+     "Leverage caps, negative balance protection and compensation can all differ between entities."
+    ],
+    [
+     "How to check",
+     "Find the entity name in your client agreement and look that exact entity up on the register."
+    ]
+   ]
+  },
+  "ig": "You are not a client of a brand. You are a client of a legal entity.\n\nThe same broker name can sit on top of very different licences. Check which one your account is actually with.",
+  "x": "You are not a client of a brand. You are a client of a legal entity.\n\nThe same broker name can sit on very different licences. Check which one holds your account.",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "v4",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/compare",
+  "data": {
+   "kicker": "Compare before you commit",
+   "title": "Put two brokers side by side before you pick one.",
+   "sub": "Regulators, entities, account types and fees on one screen. The differences are usually bigger than the marketing suggests."
+  },
+  "ig": "Two brokers can look identical on their homepages and be completely different underneath.\n\nOne may be licensed by a major regulator. The other may hold an offshore registration with very little behind it. Compare them side by side before you open an account.\n\nCompare tool — link in bio.",
+  "x": "Two brokers can look identical on their homepages and be completely different underneath.\n\nCompare regulators, entities and fees side by side before you open an account.",
+  "tags": []
+ },
+ {
+  "id": "s10",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/learn",
+  "data": {
+   "quote": "Join my VIP signals group — 95% win rate.",
+   "meaning": "Screenshots of winning trades are easy to fake and easy to cherry-pick. Many groups earn from referral fees on the broker they push.",
+   "action": "Ask which broker they refer to, then check that broker's licence."
+  },
+  "ig": "A 95% win rate on Telegram is a screenshot, not a track record.\n\nMany signal groups earn commission from the broker they recommend. Before you follow anyone's trades, check who profits from your deposit.",
+  "x": "A 95% win rate on Telegram is a screenshot, not a track record.\n\nCheck which broker the group pushes, and who profits from your deposit.",
+  "tags": [
+   "#tradingsignals"
+  ]
+ },
+ {
+  "id": "b9",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Stop-loss",
+   "definition": "An order that closes your position automatically at a price you set in advance.",
+   "example": "In fast markets it may fill at a worse price (slippage) unless it is a guaranteed stop."
+  },
+  "ig": "A stop-loss is a decision you make while calm, for the moment you will not be.\n\nIt is not perfect: in fast markets it can fill beyond your level. Some brokers offer guaranteed stops, usually for a fee.",
+  "x": "A stop-loss is a decision you make while calm, for the moment you will not be.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "r9",
+  "theme": "reg",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Segregated funds",
+   "definition": "Client money held in separate bank accounts from the broker's own money.",
+   "example": "If the broker gets into trouble, segregated funds are not supposed to be used to pay its debts."
+  },
+  "ig": "Where your money sits matters as much as who you trade with.\n\nWell-regulated brokers must keep client money segregated from company funds. Ask your broker which bank holds client money — a clear answer is a good sign.",
+  "x": "Segregated funds: client money held separately from the broker's own money.\n\nAsk your broker which bank holds it.",
+  "tags": [
+   "#investorprotection"
+  ]
+ },
+ {
+  "id": "s12",
+  "theme": "scam",
+  "kind": "mythfact",
+  "link": "/learn",
+  "data": {
+   "myth": "A slick app and website mean the broker is legit.",
+   "fact": "A polished trading platform can be rented in days. Design proves budget, not regulation. Only the register proves a licence."
+  },
+  "ig": "Good design is cheap. Regulation is not.\n\nWhite-label trading platforms can be set up quickly by anyone. Judge a broker by its licence and withdrawal record, not its interface.",
+  "x": "Good design is cheap. Regulation is not.\n\nA polished app proves budget, not a licence.",
+  "tags": [
+   "#forexscam"
+  ]
+ },
+ {
+  "id": "b12",
+  "theme": "basics",
+  "kind": "carousel",
+  "link": "/compare",
+  "data": {
+   "kicker": "Explained",
+   "title": "ECN vs market maker: what is the difference?",
+   "slides": [
+    [
+     "Market maker",
+     "The broker takes the other side of your trade and sets its own prices. Usually fixed or wider spreads, no commission."
+    ],
+    [
+     "ECN / STP",
+     "Your order is passed to outside liquidity providers. Usually raw spreads plus a commission."
+    ],
+    [
+     "The conflict question",
+     "A market maker can profit when clients lose. Strong regulation and fair execution policies matter here."
+    ],
+    [
+     "Neither is automatically better",
+     "Costs and execution depend on the broker. Check regulation first, then compare total costs."
+    ]
+   ]
+  },
+  "ig": "ECN or market maker is a business model, not a badge of honesty.\n\nBoth can be well run or badly run. Check the licence first, then compare the total cost of the way you trade.",
+  "x": "ECN or market maker is a business model, not a badge of honesty.\n\nCheck the licence first, then compare total costs.",
+  "tags": [
+   "#ECN"
+  ]
+ },
+ {
+  "id": "v5",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/scam-alerts",
+  "data": {
+   "kicker": "Scam alerts",
+   "title": "Check the warnings before you check the bonus.",
+   "sub": "Regulator warnings, clone alerts and common scam patterns, collected in one place."
+  },
+  "ig": "A big deposit bonus tells you what a broker wants. A regulator warning tells you what it has done.\n\nOur scam alerts page pulls together warnings and the patterns we see most often, so you can check a name in seconds.\n\nLink in bio.",
+  "x": "A deposit bonus tells you what a broker wants. A regulator warning tells you what it has done.\n\nCheck the warnings first.",
+  "tags": [
+   "#scamalert"
+  ]
+ },
+ {
+  "id": "r6",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/regulators",
+  "data": {
+   "number": "50:1",
+   "label": "US limit on major currency pairs",
+   "body": "Retail forex in the US is overseen by the CFTC and NFA. Other pairs are capped lower, at 20:1.",
+   "foot": "Verify any US firm on the NFA's BASIC database."
+  },
+  "ig": "The US retail forex market is small and heavily supervised.\n\nBrokers must be registered with the CFTC and be NFA members. You can look up any firm for free on the NFA's BASIC database.",
+  "x": "50:1 on majors and 20:1 on other pairs: US retail forex limits under CFTC/NFA rules.\n\nCheck any US firm on NFA BASIC.",
+  "tags": [
+   "#CFTC"
+  ]
+ },
+ {
+  "id": "s13",
+  "theme": "scam",
+  "kind": "checklist",
+  "link": "/scam-alerts",
+  "data": {
+   "title": "Already sent money? Do this first",
+   "items": [
+    "Stop all further payments, whatever they promise",
+    "Save every message, receipt and screenshot",
+    "Call your bank or card issuer straight away",
+    "Report to the regulator and the police",
+    "Ignore anyone offering paid 'recovery'"
+   ],
+   "note": "Speed matters with banks and card disputes."
+  },
+  "ig": "If you think you have been scammed, the first hours matter.\n\nStop paying, keep evidence, contact your bank or card issuer immediately, and report it to the regulator and police. Then be very careful about who contacts you next.",
+  "x": "Think you have been scammed?\n\n1. Stop all payments\n2. Save every message\n3. Call your bank now\n4. Report to the regulator and police\n5. Ignore paid 'recovery' offers",
+  "tags": [
+   "#fraudprevention"
+  ]
+ },
+ {
+  "id": "b10",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Slippage",
+   "definition": "The difference between the price you expected and the price your order actually filled at.",
+   "example": "Common around major news releases and market opens. It can go for or against you."
+  },
+  "ig": "Your order price and your fill price are not always the same.\n\nSome slippage is normal in fast markets. Slippage that only ever goes against you is something to look into.",
+  "x": "Slippage: the gap between the price you expected and the price you got.\n\nSlippage that only ever goes against you deserves a closer look.",
+  "tags": []
+ },
+ {
+  "id": "r11",
+  "theme": "reg",
+  "kind": "checklist",
+  "link": "/scam-alerts",
+  "data": {
+   "title": "Warning lists worth checking",
+   "items": [
+    "FCA Warning List — United Kingdom",
+    "IOSCO I-SCAN — warnings from many regulators",
+    "MAS Investor Alert List — Singapore",
+    "RBI Alert List — India",
+    "Your own country's regulator alerts"
+   ],
+   "note": "Not on a list is not the same as safe."
+  },
+  "ig": "Regulators publish the names of firms they have warned about. Very few traders check.\n\nSearch the broker's name on these lists before you deposit. And remember: a firm not appearing on a warning list does not mean it is licensed.",
+  "x": "Before you deposit, search the broker on:\n\nFCA Warning List\nIOSCO I-SCAN\nMAS Investor Alert List\nRBI Alert List\nYour local regulator's alerts",
+  "tags": [
+   "#scamalert"
+  ]
+ },
+ {
+  "id": "s11",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/scam-alerts",
+  "data": {
+   "quote": "Install this app so I can help set up your account.",
+   "meaning": "Remote-access software lets someone see and control your device — including your banking app.",
+   "action": "Never install remote-access tools for a broker. Uninstall and change passwords."
+  },
+  "ig": "No legitimate broker needs to control your computer.\n\nRequests to install remote-access software \"to help you trade\" are a common route to emptied bank accounts. If you already did, disconnect, uninstall it, and change your banking passwords from another device.",
+  "x": "No legitimate broker needs to control your computer.\n\nNever install remote-access software for a broker.",
+  "tags": [
+   "#cybersecurity"
+  ]
+ },
+ {
+  "id": "b13",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "CFD",
+   "definition": "A contract for difference. You trade on a price moving, without owning the underlying asset.",
+   "example": "CFDs are leveraged and risky. Retail CFD trading is restricted or banned in some countries — check yours."
+  },
+  "ig": "When you trade a CFD on gold or an index, you never own the gold or the index. You have a contract with the broker.\n\nThat makes who the broker is, and who regulates it, central to the whole trade.",
+  "x": "A CFD is a contract with your broker, not ownership of the asset.\n\nThat makes who the broker is central to every trade.",
+  "tags": [
+   "#CFD"
+  ]
+ },
+ {
+  "id": "v11",
+  "theme": "verify",
+  "kind": "carousel",
+  "link": "/compare",
+  "data": {
+   "kicker": "Ask before you deposit",
+   "title": "6 questions every broker should answer clearly",
+   "slides": [
+    [
+     "Which entity will hold my account?",
+     "Global brands run several entities. The one you sign with decides your protection."
+    ],
+    [
+     "Who regulates that entity?",
+     "Ask for the regulator and licence number, then check it yourself on the register."
+    ],
+    [
+     "Where is client money held?",
+     "You want to hear 'segregated accounts' and the name of the bank."
+    ],
+    [
+     "What does a withdrawal cost and how long?",
+     "A clear answer is normal. A vague one is not."
+    ],
+    [
+     "Do I have negative balance protection?",
+     "It depends on the entity and your client category. Get it in writing."
+    ],
+    [
+     "What are all the trading costs?",
+     "Spread, commission, overnight swap and any inactivity fee."
+    ]
+   ]
+  },
+  "ig": "A good broker answers these quickly and in writing. A bad one changes the subject.\n\nSend these six questions to support before you deposit. The quality of the answers is part of your research.",
+  "x": "6 questions to ask a broker before you deposit:\n\n- Which entity holds my account?\n- Who regulates it?\n- Where is client money held?\n- Withdrawal cost and time?\n- Negative balance protection?\n- All trading costs?",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "r5",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/regulators",
+  "data": {
+   "number": "25:1",
+   "label": "Retail FX leverage cap in Japan",
+   "body": "Japan's FSA caps leverage for individual FX traders. Crypto exchanges serving Japan must also register with the FSA.",
+   "foot": "Check the FSA's own list of registered firms."
+  },
+  "ig": "Japan runs one of the strictest retail FX regimes in the world.\n\nIndividual traders are capped at 25:1, and crypto exchanges serving Japanese residents must register with the Financial Services Agency.",
+  "x": "25:1: the retail FX leverage cap in Japan.\n\nCrypto exchanges serving Japan must register with the FSA too.",
+  "tags": [
+   "#Japan"
+  ]
+ },
+ {
+  "id": "s14",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/regulators",
+  "data": {
+   "quote": "Here's our licence certificate (PDF attached).",
+   "meaning": "Certificates and badges are easy to fake. A licence only exists if the regulator's own public register says so.",
+   "action": "Ignore the PDF. Search the register yourself."
+  },
+  "ig": "A licence is not a document the broker sends you. It is an entry on the regulator's website.\n\nIf the only proof is a PDF, an image or a badge, treat it as unverified until you find the firm on the official register.",
+  "x": "A licence is not a PDF the broker sends you. It is an entry on the regulator's website.\n\nVerify it there.",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "b11",
+  "theme": "basics",
+  "kind": "mythfact",
+  "link": "/learn",
+  "data": {
+   "myth": "If it works on demo, it will work on a live account.",
+   "fact": "Demo accounts often fill instantly with no slippage, and there is no real money pressure. Live results are usually worse."
+  },
+  "ig": "A demo account teaches you the platform. It does not teach you how you behave with real money.\n\nWhen you go live, start smaller than your demo size and compare the fills.",
+  "x": "A demo teaches you the platform. It does not teach you how you behave with real money.\n\nStart smaller when you go live.",
+  "tags": []
+ },
+ {
+  "id": "v6",
+  "theme": "verify",
+  "kind": "number",
+  "link": "/regulators",
+  "data": {
+   "number": "112",
+   "label": "regulators in our database",
+   "body": "Covering 140 countries — from the FCA (UK) and ASIC (Australia) to FSA (Japan), FSCA (South Africa) and SEBI (India).",
+   "foot": "Know who should be supervising your broker."
+  },
+  "ig": "A licence only matters if you know who issued it and what that regulator actually enforces.\n\nOur regulator database covers 112 regulators across 140 countries, with links to their official registers.\n\nFind your regulator — link in bio.",
+  "x": "A licence only matters if you know who issued it and what that regulator enforces.\n\nOur database covers 112 regulators in 140 countries, with links to official registers.",
+  "tags": [
+   "#financialregulation"
+  ]
+ },
+ {
+  "id": "r13",
+  "theme": "reg",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Margin close-out rule",
+   "definition": "A requirement for brokers to start closing a retail client's positions when margin level falls to 50% of the required margin.",
+   "example": "Part of ESMA (EU) and ASIC (Australia) retail rules. It limits how far a losing account can fall."
+  },
+  "ig": "If your positions closed before you expected, this rule may be why.\n\nUnder ESMA and ASIC retail rules, brokers must start closing positions when your margin level hits 50%. It feels harsh in the moment, but it is designed to stop small losses becoming total ones.",
+  "x": "Margin close-out: under ESMA and ASIC retail rules, positions are closed when margin level drops to 50%.\n\nIt limits how far a losing account can fall.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "s15",
+  "theme": "scam",
+  "kind": "mythfact",
+  "link": "/regulation",
+  "data": {
+   "myth": "The broker is a registered company, so it is regulated.",
+   "fact": "Company registration just means the business exists. A financial licence is a separate authorisation from a financial regulator."
+  },
+  "ig": "A company registration number is not a licence.\n\nAnyone can register a company in many places within days. Offering trading services to the public needs authorisation from a financial regulator — check for that, not the company number.",
+  "x": "A company registration number is not a financial licence.\n\nCheck the financial regulator's register, not the company registry.",
+  "tags": [
+   "#financialregulation"
+  ]
+ },
+ {
+  "id": "b14",
+  "theme": "basics",
+  "kind": "statement",
+  "link": "/learn",
+  "data": {
+   "kicker": "Read the risk warning",
+   "title": "Regulated CFD brokers must tell you what share of retail accounts lose money.",
+   "sub": "In the EU and UK it appears on the broker's website. Read it before you read the bonus."
+  },
+  "ig": "Under EU and UK rules, CFD brokers must display the percentage of their retail accounts that lose money.\n\nIt is usually in small print near the top or bottom of the page. It is one of the most useful numbers a broker will ever show you.",
+  "x": "Regulated CFD brokers in the EU and UK must show the percentage of retail accounts that lose money.\n\nRead that number before you read the bonus.",
+  "tags": [
+   "#CFD"
+  ]
+ },
+ {
+  "id": "v10",
+  "theme": "verify",
+  "kind": "checklist",
+  "link": "/learn",
+  "data": {
+   "title": "3 things to find in the client agreement",
+   "items": [
+    "Which legal entity you are contracting with",
+    "Which country's rules and courts apply",
+    "Withdrawal conditions, fees and inactivity charges"
+   ],
+   "note": "Use Ctrl+F. It takes five minutes."
+  },
+  "ig": "Nobody reads the client agreement. That is exactly why the important parts are in it.\n\nSearch it for three things: the legal entity, the governing jurisdiction, and the withdrawal and inactivity terms. If you cannot find them, that is an answer too.",
+  "x": "Nobody reads the client agreement. That is why the important parts are in it.\n\nFind: the legal entity, the jurisdiction, and the withdrawal and inactivity terms.",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "r14",
+  "theme": "reg",
+  "kind": "statement",
+  "link": "/regulators",
+  "data": {
+   "kicker": "Crypto is different",
+   "title": "An FX licence does not automatically cover a crypto exchange.",
+   "sub": "Crypto exchanges are often licensed or registered separately — for example with the FSA in Japan. Check the right register for the right service."
+  },
+  "ig": "Crypto licensing is its own world.\n\nMany countries register crypto exchanges under different rules from forex brokers, and protections vary a lot. Check that the exchange is registered for crypto services specifically, in the country that applies to you.",
+  "x": "An FX licence does not automatically cover a crypto exchange.\n\nCheck the exchange is registered for crypto services, in the right country.",
+  "tags": [
+   "#crypto"
+  ]
+ },
+ {
+  "id": "s16",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/learn",
+  "data": {
+   "quote": "We only accept crypto deposits.",
+   "meaning": "Crypto transfers are hard to reverse. Card and bank payments give you dispute options — which is why some operations avoid them.",
+   "action": "Be wary of any broker that will not take traceable payments."
+  },
+  "ig": "Ask why a broker refuses card or bank payments.\n\nCrypto-only deposits leave you with almost no way to dispute a payment. Some legitimate firms accept crypto, but a broker that accepts nothing else deserves extra scrutiny.",
+  "x": "Ask why a broker refuses card or bank payments.\n\nCrypto-only deposits leave you with almost no way to dispute a payment.",
+  "tags": [
+   "#cryptoscam"
+  ]
+ },
+ {
+  "id": "b15",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Margin level",
+   "definition": "Equity divided by used margin, shown as a percentage. It tells you how close you are to a margin call.",
+   "example": "Equity $1,500 ÷ used margin $1,000 = 150%. The lower it gets, the less room you have."
+  },
+  "ig": "Margin level is the number to watch while you have open trades.\n\nIt falls as positions move against you. Brokers set the levels at which they warn you and start closing positions — find yours in the account terms.",
+  "x": "Margin level = equity ÷ used margin × 100.\n\nThe lower it gets, the less room you have.",
+  "tags": [
+   "#riskmanagement"
+  ]
+ },
+ {
+  "id": "v8",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/reviews",
+  "data": {
+   "kicker": "Traders helping traders",
+   "title": "Your broker experience could save the next trader's deposit.",
+   "sub": "Good or bad, withdrawals and support are what people need to hear about. Reviews are moderated, never bought."
+  },
+  "ig": "The most useful broker information does not come from the broker. It comes from people who tried to withdraw.\n\nIf you have traded with a broker, write an honest review on TrustBrokerHub. Every review is moderated, and none are bought or invented.\n\nLink in bio.",
+  "x": "The most useful broker information does not come from the broker. It comes from people who tried to withdraw.\n\nTraded with a broker? Leave an honest review.",
+  "tags": [
+   "#tradingcommunity"
+  ]
+ },
+ {
+  "id": "b16",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Requote",
+   "definition": "When the broker rejects your order at the requested price and offers a new one instead.",
+   "example": "Occasional requotes happen in fast markets. Constant ones on normal days are worth noting in a review."
+  },
+  "ig": "An occasional requote is normal. A pattern is information.\n\nIf requotes keep appearing when the market is calm, note the times and prices. It tells you something about execution quality.",
+  "x": "Requote: your order is rejected at your price and you are offered a new one.\n\nOccasional is normal. A pattern is information.",
+  "tags": []
+ },
+ {
+  "id": "v12",
+  "theme": "verify",
+  "kind": "statement",
+  "link": "/methodology",
+  "data": {
+   "kicker": "How we work",
+   "title": "No pay-to-rank. The method is public.",
+   "sub": "Brokers cannot buy a higher score. Where we earn from partnerships, we say so on the page."
+  },
+  "ig": "A review site that sells rankings is just another advert.\n\nTrustBrokerHub publishes its scoring formula and weights, and no broker can pay to move up. Where we have a cashback or affiliate relationship, it is disclosed on the page.",
+  "x": "A review site that sells rankings is just another advert.\n\nOur scoring method is public, and no broker can pay to move up.",
+  "tags": [
+   "#transparency"
+  ]
+ },
+ {
+  "id": "b18",
+  "theme": "basics",
+  "kind": "checklist",
+  "link": "/learn",
+  "data": {
+   "title": "Before your first live trade",
+   "items": [
+    "Broker licence verified on the register",
+    "Small test withdrawal completed",
+    "Leverage set lower than the maximum",
+    "Pip value and stop-loss worked out",
+    "Money you can afford to lose — only"
+   ],
+   "note": "Research only. Not financial advice."
+  },
+  "ig": "Most beginner losses are decided before the first trade, not during it.\n\nRun through this list once. It takes ten minutes and covers the mistakes we see most often.",
+  "x": "Before your first live trade:\n\n- Licence verified on the register\n- Test withdrawal done\n- Leverage set low\n- Pip value and stop worked out\n- Only money you can afford to lose",
+  "tags": [
+   "#beginners"
+  ]
+ }
+]

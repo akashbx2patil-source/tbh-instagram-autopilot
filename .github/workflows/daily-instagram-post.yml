@@ -1,0 +1,64 @@
+name: Daily Instagram post
+
+on:
+  schedule:
+    - cron: "0 13 * * *"   # 13:00 UTC = 18:30 IST, every day
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (prepare and render, but do not publish to Instagram)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-autopilot
+  cancel-in-progress: false
+
+jobs:
+  post:
+    # Set the repository variable PAUSED to "true" to stop posting without deleting anything.
+    if: vars.PAUSED != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-sonnet-5-5' }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Pick and render today's post (AI writes more when the queue runs low)
+        run: python -m autopilot.main prepare
+
+      - name: Save images so Instagram can fetch them
+        run: |
+          git config user.name "instagram-autopilot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data media
+          git diff --cached --quiet || git commit -m "Prepare post for $(TZ=Asia/Kolkata date +%F)"
+          git push
+
+      - name: Publish to Instagram
+        run: python -m autopilot.main publish
+
+      - name: Record what was posted
+        if: always()
+        run: |
+          git add data
+          git diff --cached --quiet || git commit -m "Posted $(TZ=Asia/Kolkata date +%F)"
+          git push

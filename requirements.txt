@@ -1,0 +1,5 @@
+anthropic>=0.40
+playwright>=1.45
+pillow>=10
+requests>=2.31
+pynacl>=1.5

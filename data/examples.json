@@ -1,0 +1,140 @@
+[
+ {
+  "id": "v1",
+  "theme": "verify",
+  "kind": "carousel",
+  "link": "/regulators",
+  "data": {
+   "kicker": "Before you deposit",
+   "title": "How to check a forex broker in 5 minutes",
+   "slides": [
+    [
+     "Find the legal entity",
+     "Scroll to the website footer. Note the exact company name and the licence number it claims. No entity name is your first red flag."
+    ],
+    [
+     "Go to the regulator, not the broker",
+     "Open the regulator's own register in a new tab. Never trust a licence badge or a PDF the broker sends you."
+    ],
+    [
+     "Match every detail",
+     "Company name, licence number, website domain and phone number should all match the register entry. One mismatch can mean a clone."
+    ],
+    [
+     "Check the status",
+     "Authorised, revoked or expired are very different things. A licence that used to exist protects you from nothing today."
+    ],
+    [
+     "Search the warning lists",
+     "Run the name through the FCA Warning List, IOSCO I-SCAN and your local regulator's alerts. Two minutes, and it catches a lot."
+    ]
+   ]
+  },
+  "ig": "Most bad broker experiences start before the first trade. They start at the deposit.\n\nHere is the 5-minute check we would run on any broker before sending a single dollar: entity, register, match, status, warning lists.\n\nSave this for the next time a broker looks too good.",
+  "x": "Five-minute broker check before you deposit:\n\n1. Find the legal entity\n2. Open the regulator's register yourself\n3. Match name, licence no. and domain\n4. Check the licence status\n5. Search the warning lists",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "b3",
+  "theme": "basics",
+  "kind": "statement",
+  "link": "/learn",
+  "data": {
+   "kicker": "Leverage",
+   "title": "Leverage does not make you a better trader. It makes every mistake bigger, and faster.",
+   "sub": "It increases position size, not skill. The same move that doubles a stake can wipe it out."
+  },
+  "ig": "Leverage increases the size of your position, not the quality of your decisions.\n\nThat is why major regulators cap it for retail traders. Before you use it, work out what a 1% move against you would do to your account.",
+  "x": "Leverage does not make you a better trader.\n\nIt makes every mistake bigger, and faster.",
+  "tags": [
+   "#leverage"
+  ]
+ },
+ {
+  "id": "s2",
+  "theme": "scam",
+  "kind": "redflag",
+  "link": "/scam-alerts",
+  "data": {
+   "quote": "Guaranteed 10% a month, zero risk.",
+   "meaning": "No regulated broker can promise returns. Markets do not offer guarantees, so whoever is offering one is selling something else.",
+   "action": "Close the chat. Search the name on the regulator's warning list."
+  },
+  "ig": "\"Risk-free\" and \"guaranteed\" are the two most expensive words in trading.\n\nA regulated broker gives you a risk warning, not a promise. When someone guarantees a monthly return, the product being sold is the promise itself.",
+  "x": "\"Risk-free\" and \"guaranteed\" are the two most expensive words in trading.\n\nA regulated broker gives you a risk warning, not a promise.",
+  "tags": [
+   "#investmentscam"
+  ]
+ },
+ {
+  "id": "b1",
+  "theme": "basics",
+  "kind": "term",
+  "link": "/glossary",
+  "data": {
+   "term": "Pip",
+   "definition": "The standard unit of price movement in forex. For most pairs it is the fourth decimal place (0.0001).",
+   "example": "EUR/USD 1.1000 → 1.1005 is a 5-pip move. For JPY pairs a pip is the second decimal (0.01)."
+  },
+  "ig": "Every forex cost and result is measured in pips, so it pays to get this one right.\n\nFor most pairs a pip is 0.0001. For JPY pairs it is 0.01.",
+  "x": "Pip: the standard unit of forex price movement.\n\n0.0001 for most pairs. 0.01 for JPY pairs.",
+  "tags": []
+ },
+ {
+  "id": "r4",
+  "theme": "reg",
+  "kind": "number",
+  "link": "/learn",
+  "data": {
+   "number": "30:1",
+   "label": "Max retail leverage on major FX pairs",
+   "body": "Under ESMA rules in the EU and ASIC rules in Australia. Lower caps apply to minor pairs, commodities, shares and crypto.",
+   "foot": "Offered 500:1? Ask which entity you are signing with."
+  },
+  "ig": "Major regulators cap retail leverage for a reason: high leverage turns small moves into account-ending ones.\n\nIf a broker offers you far more than 30:1 on majors, you are likely being onboarded to a different, often offshore, entity with weaker protections.",
+  "x": "30:1 is the max retail leverage on major FX pairs under ESMA (EU) and ASIC (Australia) rules.\n\nOffered 500:1? Check which entity you are signing with.",
+  "tags": [
+   "#ESMA",
+   "#ASIC"
+  ]
+ },
+ {
+  "id": "v7",
+  "theme": "verify",
+  "kind": "checklist",
+  "link": "/regulation",
+  "data": {
+   "title": "Licence check: all five must match",
+   "items": [
+    "Company name — exact match, not 'similar'",
+    "Licence number — on the regulator's site",
+    "Website domain — listed in the register entry",
+    "Status — currently authorised, not revoked",
+    "Entity — the one named in your client agreement"
+   ],
+   "note": "One mismatch is enough to stop."
+  },
+  "ig": "A licence number on a website proves nothing on its own. Scammers copy real ones.\n\nAll five of these should match the regulator's register before you deposit. If even one does not, stop and ask why.\n\nSave this checklist.",
+  "x": "A licence number on a website proves nothing on its own. Scammers copy real ones.\n\nName, licence no., domain, status and entity should all match the regulator's register.",
+  "tags": [
+   "#duediligence"
+  ]
+ },
+ {
+  "id": "r10",
+  "theme": "reg",
+  "kind": "mythfact",
+  "link": "/regulation",
+  "data": {
+   "myth": "Any licence gives the same protection as an FCA or ASIC licence.",
+   "fact": "Protections differ widely. Some offshore licences involve little ongoing supervision, no leverage limits and no compensation scheme."
+  },
+  "ig": "\"Regulated\" is not one thing.\n\nA licence from a major regulator comes with supervision, capital rules and complaint routes. Some offshore registrations come with very little. Always ask who regulates the broker, not just whether it is regulated.",
+  "x": "\"Regulated\" is not one thing.\n\nAsk who regulates the broker, not just whether it is regulated.",
+  "tags": [
+   "#financialregulation"
+  ]
+ }
+]
