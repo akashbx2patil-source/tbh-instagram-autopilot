@@ -1,0 +1,40 @@
+name: Import Canva images
+
+# One-off helper: downloads the images listed in data/canva_import.json into assets/ready/
+# and commits them. Runs whenever that file is pushed. The file is deleted afterwards.
+on:
+  push:
+    paths: ["data/canva_import.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-autopilot
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download images
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, urllib.request
+          items = json.load(open("data/canva_import.json"))
+          for it in items:
+              p = pathlib.Path(it["path"]); p.parent.mkdir(parents=True, exist_ok=True)
+              data = urllib.request.urlopen(it["url"], timeout=120).read()
+              assert data[:3] == b"\xff\xd8\xff", f"{p} is not a JPEG"
+              p.write_bytes(data); print(f"saved {p} ({len(data)//1024} KB)")
+          PY
+          git rm -q data/canva_import.json
+      - name: Commit
+        run: |
+          git config user.name "instagram-autopilot"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/ready
+          git commit -m "Import approved Canva posts"
+          git pull --rebase -q && git push
