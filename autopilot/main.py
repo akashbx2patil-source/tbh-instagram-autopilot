@@ -1,24 +1,39 @@
 """TrustBrokerHub Instagram autopilot.
 
-python -m autopilot.main prepare        # pick today's post (AI-generate more if the queue is low) and render it
-python -m autopilot.main publish        # publish today's rendered post to Instagram
-python -m autopilot.main refresh-token  # renew the Instagram token (and update the GitHub secret if GH_PAT is set)
-python -m autopilot.main status         # show what is queued
+  python -m autopilot.main create         # make today's post and send it to your phone for approval
+  python -m autopilot.main check          # read Approve / Reject; publish approved posts at POST_AT
+  python -m autopilot.main refresh-token  # renew the Instagram token
+  python -m autopilot.main status         # print what is pending / queued
+  python -m autopilot.main setup <step> [value]   # one-time setup helpers (see README)
+
+Daily flow:
+  1. create: the writer AI (Gemini or ChatGPT) writes headline + subline + CTA + picture idea
+  2. rule check + checker AI review (rewritten until it passes)
+  3. optional AI background picture, then Canva fills the brand template and exports a PNG
+  4. the checker AI looks at the finished image
+  5. Telegram sends it to your phone with Approve / Reject
+  6. check: once approved, the writer AI writes caption + hashtags, the checker AI reviews them
+  7. it is published to Instagram at POST_AT (default 18:30 India time)
 """
 import datetime as dt, json, os, sys, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 import requests
 
+from . import content, telegram as tg
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA, MEDIA = ROOT / "data", ROOT / "media"
-QUEUE, POSTED, TODAY, STATE = DATA / "queue.json", DATA / "posted.json", DATA / "today.json", DATA / "state.json"
-TZ = ZoneInfo(os.environ.get("TIMEZONE", "Asia/Kolkata"))
-LOW_WATER = int(os.environ.get("QUEUE_LOW_WATER", "7"))   # generate more when fewer than this remain
-BATCH = int(os.environ.get("GENERATE_BATCH", "7"))
-DRY_RUN = os.environ.get("DRY_RUN", "false").lower() == "true"
+PENDING, POSTED, STATE = DATA / "pending.json", DATA / "posted.json", DATA / "state.json"
+READY, REJECTED, STATUS = DATA / "ready.json", DATA / "rejected.json", DATA / "status.json"
+TZ = ZoneInfo(os.environ.get("TIMEZONE") or "Asia/Kolkata")
+POST_AT = os.environ.get("POST_AT") or "18:30"
+MAX_PER_DAY = int(os.environ.get("MAX_POSTS_CREATED_PER_DAY") or "4")
+REASON_WAIT_MIN = 20
+DRY_RUN = (os.environ.get("DRY_RUN") or "false").lower() == "true"
 
 
+# ---------- small helpers ----------
 def load(path, default):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else default
 
@@ -27,134 +42,344 @@ def save(path, obj):
     path.write_text(json.dumps(obj, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def today():
-    return dt.datetime.now(TZ).date().isoformat()
+def now():
+    return dt.datetime.now(TZ)
+
+
+def iso(t=None):
+    return (t or now()).isoformat(timespec="seconds")
+
+
+def raw_url(rel):
+    repo = os.environ.get("GITHUB_REPOSITORY", "akashbx2patil-source/tbh-instagram-autopilot")
+    branch = os.environ.get("GITHUB_REF_NAME") or "main"
+    return f"{os.environ.get('MEDIA_BASE_URL') or f'https://raw.githubusercontent.com/{repo}/{branch}'}/{rel}"
 
 
 def instagram_ready():
     return bool(os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN"))
 
 
-def prepare():
-    from .render import render_post, instagram_caption, alt
-    from .generate import generate, title_of
-    if not DRY_RUN and not instagram_ready():
-        print("::notice::Instagram secrets (IG_USER_ID, IG_ACCESS_TOKEN) are not set yet, so nothing was prepared. "
-              "Run the workflow with 'Dry run' ticked to test without them.")
+def write_status():
+    """data/status.json: one file the admin panel (or anyone) can read to see the autopilot's state."""
+    p, posted = load(PENDING, None), load(POSTED, [])
+    pend = None
+    if p:
+        pend = {k: p.get(k) for k in ("id", "source", "status", "theme", "headline", "subline", "cta", "text",
+                                       "created_at", "approved_at", "warnings", "canva_edit_url", "kind")}
+        pend["images"] = [raw_url(f) for f in p["files"]]
+        pend["publishes_at"] = f"{POST_AT} {TZ.key}" if p["status"] == "approved" else None
+    new = {"post_at": POST_AT, "timezone": TZ.key, "pending": pend, "ready_left": len(load(READY, [])),
+           "recent": [{**r, "images": [raw_url(f) for f in r.get("files", [])]} for r in posted[-20:][::-1]]}
+    old = load(STATUS, {})
+    if {k: v for k, v in old.items() if k != "updated_at"} != new:  # only touch the file when something changed
+        save(STATUS, {"updated_at": iso(), **new})
+
+
+# ---------- create ----------
+def _used_topics():
+    return [p.get("topic") or p.get("title", "") for p in load(POSTED, [])] + \
+           [r.get("topic", "") for r in load(REJECTED, [])]
+
+
+def _feedback_from_rejections():
+    lines = [f"- Akash rejected \"{r.get('topic', '')}\": {r['reason']}" for r in load(REJECTED, [])[-8:] if r.get("reason")]
+    return ("Earlier posts Akash rejected, and why (avoid the same mistakes):\n" + "\n".join(lines)) if lines else ""
+
+
+def _make_ai_post(state):
+    from . import canva, llm
+    k = state.get("next_ai_index", 1)
+    state["next_ai_index"] = k + 1
+    pid, theme = f"ai{k:04d}", content.THEMES[k % len(content.THEMES)]
+    history, feedback = _feedback_from_rejections(), ""
+    for attempt in range(5):
+        p = content.write_post(theme, _used_topics(), "\n".join(x for x in (history, feedback) if x))
+        errs = content.validate_post(p)
+        if not errs:
+            v = content.check_text(p)
+            errs = [] if v.get("ok") else (v.get("issues") or ["rejected by the checker"])
+        if not errs:
+            break
+        feedback = "\n".join(f"- {e}" for e in errs)
+        print(f"Attempt {attempt + 1} rejected:\n{feedback}")
+    else:
+        raise RuntimeError(f"No post passed the checks after 5 attempts. Last problems:\n{feedback}")
+
+    warnings, png, edit_url = [], None, ""
+    for attempt in range(2):
+        hero = llm.hero_image(content.HERO_STYLE + p["hero_prompt"])
+        asset = canva.upload_image(hero, f"{pid}-hero.png") if hero else None
+        design_id, edit_url = canva.fill_template(
+            {"HEADLINE": p["headline"], "SUBLINE": p["subline"], "CTA": p["cta"]}, f"Autopilot {pid} {now():%Y-%m-%d}", asset)
+        png = canva.export_jpg(design_id)
+        v = content.check_image(png, p)
+        warnings = [] if v.get("ok") else (v.get("issues") or ["image check failed"])
+        if not warnings:
+            break
+        print(f"Image check problems: {warnings}")
+    rel = f"media/{now():%Y-%m-%d}-{pid}/slide-01.jpg"
+    (ROOT / rel).parent.mkdir(parents=True, exist_ok=True)
+    (ROOT / rel).write_bytes(png)
+    return {"id": pid, "source": "ai", "kind": "single", "theme": theme, "topic": p["topic"], "headline": p["headline"],
+            "subline": p["subline"], "cta": p["cta"], "hero_prompt": p["hero_prompt"], "files": [rel],
+            "canva_edit_url": edit_url, "warnings": warnings}
+
+
+def _take_ready():
+    ready = load(READY, [])
+    if not ready:
+        return None
+    r = ready.pop(0)
+    save(READY, ready)
+    folder = ROOT / r["folder"]
+    files = sorted(str(f.relative_to(ROOT)) for f in folder.glob("slide-*.*"))
+    if not files:
+        raise RuntimeError(f"No slide images found in {r['folder']}")
+    return {"id": r["id"], "source": "ready", "kind": "carousel" if len(files) > 1 else "single", "theme": r.get("theme", "verify"),
+            "topic": r["title"], "headline": r["title"], "subline": "", "cta": "", "text": r["text"], "files": files, "warnings": [],
+            "caption": r.get("caption"), "hashtags": r.get("hashtags")}
+
+
+def create(force=False):
+    state, pending = load(STATE, {}), load(PENDING, None)
+    if pending:
+        print(f"{pending['id']} is still {pending['status']}; not making a new post.")
+        if pending["status"] == "awaiting_approval" and not force:
+            tg.say(f"Reminder: post {pending['id']} is still waiting for your approval (buttons above).")
         return
-    date = today()
-    posted = load(POSTED, [])
-    if any(p["date"] == date for p in posted):
-        print(f"Already posted for {date}. Nothing to do."); return
-    current = load(TODAY, None)
-    if current and current["date"] == date:
-        print(f"Today's post already prepared: {current['post']['id']}"); return
+    today = now().strftime("%Y-%m-%d")
+    made = state.get("made", {})
+    if made.get("date") != today:
+        made = {"date": today, "count": 0}
+    if made["count"] >= MAX_PER_DAY:
+        tg.say(f"I've already made {MAX_PER_DAY} posts today, so I'll stop for now. Send /new tomorrow, or raise MAX_POSTS_CREATED_PER_DAY.")
+        return
+    made["count"] += 1
+    state["made"] = made
 
-    queue, state = load(QUEUE, []), load(STATE, {"next_ai_index": 1})
-    if current:  # an earlier day's post never got published: put it back at the front
-        print(f"Re-queueing unpublished post {current['post']['id']} from {current['date']}.")
-        queue.insert(0, current["post"]); TODAY.unlink()
-    if len(queue) < LOW_WATER:
-        if not os.environ.get("ANTHROPIC_API_KEY"):
-            if not queue:
-                sys.exit("Queue is empty and ANTHROPIC_API_KEY is not set, so no post can be made.")
-            print(f"Queue is low ({len(queue)}) but ANTHROPIC_API_KEY is not set; skipping generation.")
+    post = _take_ready() or _make_ai_post(state)
+    post.update(status="awaiting_approval", created_at=iso())
+    save(STATE, state)
+    save(PENDING, post)
+
+    lines = [f"New post for approval ({post['id']})", ""]
+    if post["source"] == "ready":
+        lines.append(post["topic"] + ("  [carousel, %d slides]" % len(post["files"]) if post["kind"] == "carousel" else ""))
+    else:
+        lines += [post["headline"].replace("\n", " "), post["subline"], "", "AI checks: words passed."]
+        lines.append("Image check: passed." if not post["warnings"] else "Image check flagged: " + "; ".join(post["warnings"]))
+    lines += ["", f"Approve to publish at {POST_AT} India time (or right away if that has passed). "
+              "Reject to get a new one; you can then reply with what to change."]
+    text = "\n".join(lines)
+    if tg.ready():
+        images = [(Path(f).name, (ROOT / f).read_bytes()) for f in post["files"]]
+        if len(images) == 1:
+            post["telegram_message_id"] = tg.send_for_approval(images[0][1], text, post["id"], images[0][0])
         else:
-            used_ids = [p["id"] for p in posted] + [p["id"] for p in queue]
-            used_titles = [p["title"] for p in posted] + [title_of(p) for p in queue]
-            print(f"Queue has {len(queue)} posts; asking Claude for {BATCH} more...")
-            new, state["next_ai_index"] = generate(BATCH, state["next_ai_index"], used_ids, used_titles)
-            for p in new:  # JSON-safe
-                if p["kind"] == "carousel": p["data"]["slides"] = [list(s) for s in p["data"]["slides"]]
-            queue += new
-            save(QUEUE, queue); save(STATE, state)
-            print("Added: " + ", ".join(f'{p["id"]} ({title_of(p)})' for p in new))
-
-    post = queue.pop(0)
-    if post["kind"] == "carousel":
-        post["data"]["slides"] = [tuple(s) for s in post["data"]["slides"]]
-    files = render_post(post, MEDIA / date)
-    if post["kind"] == "carousel":
-        post["data"]["slides"] = [list(s) for s in post["data"]["slides"]]
-    save(QUEUE, queue)
-    save(TODAY, {"date": date, "post": post, "files": [f.name for f in files],
-                 "caption": instagram_caption(post), "alt": alt(post), "title": title_of(post)})
-    print(f"Prepared {post['id']} for {date}: {len(files)} image(s). {len(queue)} left in queue.")
+            post["telegram_message_id"] = tg.send_album(images, text, post["id"])
+        save(PENDING, post)
+    else:
+        print("::warning::Telegram is not set up, so nobody was asked to approve.\n" + text)
+    write_status()
+    print(f"Created {post['id']} and asked for approval.")
 
 
-def media_url(date, name):
-    base = os.environ.get("MEDIA_BASE_URL")
-    if not base:
-        repo, branch = os.environ["GITHUB_REPOSITORY"], os.environ.get("GITHUB_REF_NAME", "main")
-        base = f"https://raw.githubusercontent.com/{repo}/{branch}/media"
-    return f"{base.rstrip('/')}/{date}/{name}"
+# ---------- check (approvals + publishing) ----------
+def _reject(pending, state, reason="", by="phone"):
+    rej = load(REJECTED, [])
+    rej.append({"id": pending["id"], "topic": pending.get("topic", ""), "headline": pending.get("headline", ""),
+                "reason": reason, "at": iso(), "by": by})
+    save(REJECTED, rej[-100:])
+    if pending.get("telegram_message_id"):
+        tg.close_buttons(pending["telegram_message_id"], f"Rejected {pending['id']}." + (
+            "" if reason else " Reply with what to change (or 'skip') and I'll make a new one."))
+    PENDING.unlink(missing_ok=True)
+    state["replace_after"] = iso() if reason else iso(now() + dt.timedelta(minutes=REASON_WAIT_MIN))
 
 
-def wait_public(urls, timeout=300):
-    end = time.time() + timeout
-    for u in urls:
-        while True:
-            try:
-                r = requests.head(u, timeout=20, allow_redirects=True)
-                if r.status_code == 200 and "image" in r.headers.get("content-type", ""):
-                    break
-            except requests.RequestException:
-                pass
-            if time.time() > end:
-                sys.exit(f"Image not publicly reachable: {u}. Is the repository public?")
-            time.sleep(10)
+def _approve(pending, by="phone"):
+    if pending["status"] == "approved":
+        return
+    pending.update(status="approved", approved_at=iso(), approved_by=by)
+    save(PENDING, pending)
+    if pending.get("telegram_message_id"):
+        when = "Posting it now." if _time_to_post() else f"It goes live at {POST_AT} India time (within about 15 minutes of it)."
+        tg.close_buttons(pending["telegram_message_id"], f"Approved {pending['id']}. {when}")
 
 
-def publish():
+def _time_to_post():
+    h, m = map(int, POST_AT.split(":"))
+    return now() >= now().replace(hour=h, minute=m, second=0, microsecond=0)
+
+
+def publish(pending):
+    post_text = content.post_text(pending)
+    feedback, cap = "", None
+    if pending.get("caption") and pending.get("hashtags"):  # ready-made post with an approved caption
+        cap = content.final_caption({"caption": pending["caption"], "hashtags": pending["hashtags"]})
+    for attempt in range(0 if cap else 4):
+        c = content.write_caption(post_text, feedback)
+        errs = content.validate_caption(c)
+        if not errs:
+            v = content.check_caption(post_text, c)
+            errs = [] if v.get("ok") else (v.get("issues") or ["rejected by the checker"])
+        if not errs:
+            cap = content.final_caption(c)
+            break
+        feedback = "\n".join(f"- {e}" for e in errs)
+        print(f"Caption attempt {attempt + 1} rejected:\n{feedback}")
+    if not cap:
+        tg.say(f"I couldn't write a caption for {pending['id']} that passed the checks. I'll try again on the next run.\n{feedback}")
+        return
+    urls = [raw_url(f) for f in pending["files"]]
+    alt = (pending.get("headline") or pending.get("topic", "")).replace("\n", " ") + ". " + (pending.get("subline") or "")
+    if DRY_RUN or not instagram_ready():
+        why = "DRY RUN" if DRY_RUN else "Instagram is not connected yet (IG_USER_ID / IG_ACCESS_TOKEN)"
+        print(f"{why}: would publish\n" + "\n".join(urls) + "\n\n" + cap)
+        tg.say(f"{why}, so nothing was posted. This is the caption it would use:\n\n{cap}")
+        return
     from .instagram import publish as ig_publish
-    cur = load(TODAY, None)
-    date = today()
-    if not cur or cur["date"] != date:
-        print("Nothing prepared for today."); return
-    urls = [media_url(date, f) for f in cur["files"]]
-    if DRY_RUN:
-        print("DRY RUN — would publish:\n" + "\n".join(urls) + "\n\n" + cur["caption"]); return
-    if not instagram_ready():
-        print("::notice::Instagram secrets are not set; not publishing."); return
-    wait_public(urls)
-    media_id = ig_publish(urls, cur["caption"], cur["alt"])
+    for u in urls:  # Instagram downloads the images, so they must be public first
+        for _ in range(30):
+            r = requests.head(u, timeout=20, allow_redirects=True)
+            if r.status_code == 200:
+                break
+            time.sleep(10)
+        else:
+            raise RuntimeError(f"Image not reachable: {u}. Is the repository public?")
+    media_id = ig_publish(urls, cap, alt.strip())
     posted = load(POSTED, [])
-    posted.append({"date": date, "id": cur["post"]["id"], "theme": cur["post"]["theme"], "kind": cur["post"]["kind"],
-                   "title": cur["title"], "instagram_media_id": media_id})
+    posted.append({"date": now().strftime("%Y-%m-%d"), "posted_at": iso(), "id": pending["id"], "source": pending["source"],
+                   "theme": pending.get("theme"), "kind": pending.get("kind"), "topic": pending.get("topic"),
+                   "title": (pending.get("headline") or pending.get("topic", "")).replace("\n", " "),
+                   "caption": cap, "files": pending["files"], "instagram_media_id": media_id})
     save(POSTED, posted)
-    TODAY.unlink()
-    print(f"Published {cur['post']['id']} to Instagram (media id {media_id}).")
+    PENDING.unlink(missing_ok=True)
+    tg.say(f"Posted {pending['id']} to Instagram.\n\n{cap[:600]}")
+    print(f"Published {pending['id']} (media id {media_id}).")
+
+
+def _status_text():
+    p = load(PENDING, None)
+    if not p:
+        return f"Nothing waiting. Ready-made posts left: {len(load(READY, []))}. Send /new to make one now."
+    head = (p.get("headline") or p.get("topic", "")).replace("\n", " ")
+    return f"{p['id']} is {p['status'].replace('_', ' ')}: {head}"
+
+
+def check():
+    state, pending = load(STATE, {}), load(PENDING, None)
+    events = []
+    decision = (os.environ.get("DECISION") or "").strip().lower()  # from the admin panel / workflow button
+    if decision in ("approve", "reject"):
+        events.append({"kind": decision, "post_id": os.environ.get("DECISION_POST_ID") or (pending or {}).get("id"),
+                       "reason": os.environ.get("REASON", ""), "by": "admin"})
+    if tg.ready():
+        evs, state["tg_offset"] = tg.updates(state.get("tg_offset", 0))
+        events += evs
+    want_new = False
+    for e in events:
+        pending = load(PENDING, None)
+        if e["kind"] in ("approve", "reject"):
+            if not pending or e.get("post_id") != pending["id"]:
+                tg.say(f"That button was for {e.get('post_id')}, which is no longer waiting. " + _status_text())
+                continue
+            if e["kind"] == "approve":
+                _approve(pending, e.get("by", "phone"))
+            else:
+                _reject(pending, state, e.get("reason", ""), e.get("by", "phone"))
+            continue
+        text = e["text"]
+        low = text.lower()
+        if low.startswith("/start"):
+            tg.say("Hi. I'll send each new TrustBrokerHub post here for approval. Commands: /status, /new, /approve, /reject <reason>.")
+        elif low.startswith("/status"):
+            tg.say(_status_text())
+        elif low.startswith("/new"):
+            want_new = True
+        elif low.startswith("/approve") and pending:
+            _approve(pending)
+        elif low.startswith("/reject") and pending:
+            _reject(pending, state, text[7:].strip())
+        elif state.get("replace_after") and not pending:  # a reason after tapping Reject
+            rej = load(REJECTED, [])
+            if rej and low not in ("skip", "no", "none"):
+                rej[-1]["reason"] = text
+                save(REJECTED, rej)
+            state["replace_after"] = iso()
+            tg.say("Noted. Making a new post now.")
+        else:
+            tg.say("I only understand the buttons, /status, /new, /approve and /reject <reason>.")
+    save(STATE, state)
+
+    pending = load(PENDING, None)
+    due = state.get("replace_after") and now() >= dt.datetime.fromisoformat(state["replace_after"])
+    if not pending and (want_new or due):
+        state.pop("replace_after", None)
+        save(STATE, state)
+        create(force=True)
+    elif pending and want_new:
+        tg.say(f"{pending['id']} is still {pending['status'].replace('_', ' ')}. Reject it first if you want a new one.")
+    pending = load(PENDING, None)
+    if pending and pending["status"] == "approved" and _time_to_post():
+        publish(pending)
+    write_status()
+
+
+# ---------- setup helpers ----------
+def setup(step, value=""):
+    if step == "telegram":
+        cid, name = tg.find_chat_id()
+        if not cid:
+            sys.exit("No message found. Open your bot in Telegram, press Start (or send 'hi'), then run this again.")
+        from .ghsecret import save_secret
+        save_secret("TELEGRAM_CHAT_ID", str(cid))
+        os.environ["TELEGRAM_CHAT_ID"] = str(cid)
+        tg.say(f"Connected. Hi {name}, approvals for TrustBrokerHub posts will come here.")
+        print(f"Saved TELEGRAM_CHAT_ID for {name}.")
+    elif step == "canva-link":
+        from .canva import auth_link, REDIRECT
+        print("\n1. Open this link, log in to Canva and click Allow:\n\n" + auth_link() +
+              f"\n\n2. The browser then tries to open {REDIRECT}?code=... and shows an error page. That is expected."
+              "\n3. Copy the WHOLE address from the address bar and run this workflow again with step 'canva-code',"
+              " pasting it into the 'value' box. Do it within a few minutes.\n")
+    elif step == "canva-code":
+        from .canva import connect
+        connect(value)
+        print("Canva connected. CANVA_REFRESH_TOKEN saved.")
+    elif step == "test":
+        from . import llm
+        for role in ("writer", "checker"):
+            print(f"{role}: {llm.provider(role)} ->", llm.ask_json(role, "Reply in JSON.", 'Return {"ok": true}'))
+        if os.environ.get("CANVA_REFRESH_TOKEN"):
+            from . import canva
+            canva.token()
+            print("Canva: login works.")
+        print("Telegram:", "ready" if tg.ready() else "not set up")
+        tg.say("Test message from the TrustBrokerHub autopilot. Everything that printed OK is working.")
+        print("Instagram:", "secrets present" if instagram_ready() else "not set up")
+    else:
+        sys.exit(f"Unknown setup step {step}")
 
 
 def refresh_token():
     from .instagram import refresh_token as ig_refresh
+    from .ghsecret import save_secret
     token, expires = ig_refresh()
-    print(f"Instagram token refreshed; valid for about {int(expires or 0) // 86400} days.")
-    pat, repo = os.environ.get("GH_PAT"), os.environ.get("GITHUB_REPOSITORY")
-    if not pat:
-        print("::warning::GH_PAT is not set, so the new token could not be saved. Update the IG_ACCESS_TOKEN secret by hand before it expires.")
-        return
-    from base64 import b64encode
-    from nacl import encoding, public
-    h = {"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github+json"}
-    key = requests.get(f"https://api.github.com/repos/{repo}/actions/secrets/public-key", headers=h, timeout=30).json()
-    box = public.SealedBox(public.PublicKey(key["key"].encode(), encoding.Base64Encoder()))
-    enc = b64encode(box.encrypt(token.encode())).decode()
-    r = requests.put(f"https://api.github.com/repos/{repo}/actions/secrets/IG_ACCESS_TOKEN", headers=h,
-                     json={"encrypted_value": enc, "key_id": key["key_id"]}, timeout=30)
-    if r.status_code not in (201, 204):
-        sys.exit(f"Could not update the IG_ACCESS_TOKEN secret: {r.status_code} {r.text}")
-    print("Saved the new token to the IG_ACCESS_TOKEN secret.")
+    save_secret("IG_ACCESS_TOKEN", token)
+    print(f"Instagram token refreshed and saved; valid for about {int(expires or 0) // 86400} days.")
 
 
 def status():
-    from .generate import title_of
-    q, posted = load(QUEUE, []), load(POSTED, [])
-    print(f"Posted so far: {len(posted)}. Queued: {len(q)}.")
-    for i, p in enumerate(q[:10]):
-        print(f"  {i+1:>2}. {p['id']:<8} {p['theme']:<7} {p['kind']:<10} {title_of(p)}")
+    print(_status_text())
+    for i, r in enumerate(load(READY, [])):
+        print(f"  ready {i + 1}. {r['id']}: {r['title']}")
 
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
-    {"prepare": prepare, "publish": publish, "refresh-token": refresh_token, "status": status}[cmd]()
+    if cmd == "setup":
+        setup(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")
+    else:
+        {"create": create, "check": check, "refresh-token": refresh_token, "status": status}[cmd]()

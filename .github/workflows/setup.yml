@@ -1,0 +1,40 @@
+name: Setup
+
+# One-time setup helpers. Actions -> Setup -> Run workflow, pick a step.
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "Setup step"
+        type: choice
+        options: [test, telegram, canva-link, canva-code]
+        default: test
+      value:
+        description: "For canva-code: paste the whole address from the browser"
+        required: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      WRITER: ${{ vars.WRITER }}
+      CHECKER: ${{ vars.CHECKER }}
+      CANVA_CLIENT_ID: ${{ secrets.CANVA_CLIENT_ID }}
+      CANVA_CLIENT_SECRET: ${{ secrets.CANVA_CLIENT_SECRET }}
+      CANVA_REFRESH_TOKEN: ${{ secrets.CANVA_REFRESH_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+      STEP: ${{ inputs.step }}
+      VALUE: ${{ inputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m autopilot.main setup "$STEP" "$VALUE"

@@ -1,0 +1,87 @@
+name: Autopilot
+
+# 08:57 India time: make today's post and send it to your phone.
+# Every 15 minutes (08:30 to 00:30 India time): read Approve / Reject and publish approved posts at POST_AT.
+on:
+  schedule:
+    - cron: "27 3 * * *"
+    - cron: "*/15 3-18 * * *"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "What to do"
+        type: choice
+        options: [check, create, approve, reject]
+        default: check
+      post_id:
+        description: "Post id (for approve / reject; blank = the one waiting)"
+        required: false
+      reason:
+        description: "Reason (for reject)"
+        required: false
+      dry_run:
+        description: "Dry run: do everything except posting to Instagram"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-autopilot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    # Set the repository variable PAUSED to "true" to stop everything without deleting anything.
+    if: vars.PAUSED != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      WRITER: ${{ vars.WRITER }}
+      CHECKER: ${{ vars.CHECKER }}
+      HERO_IMAGES: ${{ vars.HERO_IMAGES || 'off' }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+      CANVA_CLIENT_ID: ${{ secrets.CANVA_CLIENT_ID }}
+      CANVA_CLIENT_SECRET: ${{ secrets.CANVA_CLIENT_SECRET }}
+      CANVA_REFRESH_TOKEN: ${{ secrets.CANVA_REFRESH_TOKEN }}
+      CANVA_TEMPLATE_ID: ${{ vars.CANVA_TEMPLATE_ID || 'EAHXu-PJ0RI' }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+      POST_AT: ${{ vars.POST_AT || '18:30' }}
+      DRY_RUN: ${{ inputs.dry_run || 'false' }}
+      DECISION: ${{ (inputs.action == 'approve' || inputs.action == 'reject') && inputs.action || '' }}
+      DECISION_POST_ID: ${{ inputs.post_id }}
+      REASON: ${{ inputs.reason }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Run
+        run: |
+          if [ "${{ github.event.schedule }}" = "27 3 * * *" ] || [ "${{ inputs.action }}" = "create" ]; then
+            python -m autopilot.main create
+          else
+            python -m autopilot.main check
+          fi
+
+      - name: Save progress
+        if: always()
+        run: |
+          git config user.name "instagram-autopilot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data media
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Autopilot $(TZ=Asia/Kolkata date '+%F %H:%M')"
+            git pull -q --rebase && git push -q
+          fi
