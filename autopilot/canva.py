@@ -18,20 +18,28 @@ class CanvaError(RuntimeError):
     pass
 
 
+def _env(name):
+    """Read a secret without stray spaces or line breaks (easy to paste by accident)."""
+    v = (os.environ.get(name) or "").strip().strip('"').strip("'")
+    if not v:
+        raise CanvaError(f"The {name} secret is missing")
+    return v
+
+
 def _basic():
-    raw = f"{os.environ['CANVA_CLIENT_ID']}:{os.environ['CANVA_CLIENT_SECRET']}".encode()
+    raw = f"{_env('CANVA_CLIENT_ID')}:{_env('CANVA_CLIENT_SECRET')}".encode()
     return {"Authorization": "Basic " + base64.b64encode(raw).decode()}
 
 
 def _verifier():
     # Derived from the client secret, so the setup link can be printed without storing anything.
-    return hashlib.sha256(("tbh-pkce:" + os.environ["CANVA_CLIENT_SECRET"]).encode()).hexdigest()
+    return hashlib.sha256(("tbh-pkce:" + _env("CANVA_CLIENT_SECRET")).encode()).hexdigest()
 
 
 def auth_link():
     challenge = base64.urlsafe_b64encode(hashlib.sha256(_verifier().encode()).digest()).decode().rstrip("=")
     q = {"code_challenge": challenge, "code_challenge_method": "S256", "scope": SCOPES, "response_type": "code",
-         "client_id": os.environ["CANVA_CLIENT_ID"], "redirect_uri": REDIRECT, "state": "tbh"}
+         "client_id": _env("CANVA_CLIENT_ID"), "redirect_uri": REDIRECT, "state": "tbh"}
     return "https://www.canva.com/api/oauth/authorize?" + urllib.parse.urlencode(q, quote_via=urllib.parse.quote)
 
 
@@ -55,7 +63,7 @@ def token():
     if _token:
         return _token
     r = requests.post(f"{API}/oauth/token", headers=_basic(), timeout=60, data={
-        "grant_type": "refresh_token", "refresh_token": os.environ["CANVA_REFRESH_TOKEN"]})
+        "grant_type": "refresh_token", "refresh_token": _env("CANVA_REFRESH_TOKEN")})
     if r.status_code != 200:
         raise CanvaError(f"Canva login failed ({r.status_code}): {r.text[:300]}. Run the Setup workflow -> connect-canva again.")
     body = r.json()
@@ -100,7 +108,7 @@ def fill_template(fields, title, hero_asset_id=None):
     data = {k: {"type": "text", "text": v} for k, v in fields.items()}
     if hero_asset_id:
         data["HERO"] = {"type": "image", "asset_id": hero_asset_id}
-    job = _req("POST", "/autofills", json={"brand_template_id": os.environ["CANVA_TEMPLATE_ID"], "title": title, "data": data})["job"]
+    job = _req("POST", "/autofills", json={"brand_template_id": _env("CANVA_TEMPLATE_ID"), "title": title, "data": data})["job"]
     design = _wait(f"/autofills/{job['id']}")["result"]["design"]
     return design["id"], (design.get("urls") or {}).get("edit_url") or design.get("url", "")
 

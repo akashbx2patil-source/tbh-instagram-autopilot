@@ -340,6 +340,9 @@ def setup(step, value=""):
         print(f"Saved TELEGRAM_CHAT_ID for {name}.")
     elif step == "canva-link":
         from .canva import auth_link, REDIRECT
+        from .canva import _env
+        cid = _env("CANVA_CLIENT_ID")
+        print(f"Client ID in use: {cid}  ({len(cid)} characters). It must match the Client ID on canva.com/developers exactly.")
         print("\n1. Open this link, log in to Canva and click Allow:\n\n" + auth_link() +
               f"\n\n2. The browser then tries to open {REDIRECT}?code=... and shows an error page. That is expected."
               "\n3. Copy the WHOLE address from the address bar and run this workflow again with step 'canva-code',"
