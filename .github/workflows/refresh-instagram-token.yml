@@ -5,12 +5,20 @@ on:
     - cron: "0 4 * * 1"   # every Monday; tokens last 60 days
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-autopilot
+  cancel-in-progress: false
+
 jobs:
   refresh:
+    if: vars.PAUSED != 'true'
     runs-on: ubuntu-latest
     env:
       IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-      GH_PAT: ${{ secrets.GH_PAT }}
+      CANVA_CLIENT_SECRET: ${{ secrets.CANVA_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -18,3 +26,12 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python -m autopilot.main refresh-token
+      - name: Save
+        run: |
+          git config user.name "instagram-autopilot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Refresh Instagram token"
+            git pull -q --rebase && git push -q
+          fi

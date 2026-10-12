@@ -56,8 +56,16 @@ def raw_url(rel):
     return f"{os.environ.get('MEDIA_BASE_URL') or f'https://raw.githubusercontent.com/{repo}/{branch}'}/{rel}"
 
 
+def _vault_ig():
+    try:
+        from . import vault
+        return vault.get("ig_access_token")
+    except Exception:
+        return None
+
+
 def instagram_ready():
-    return bool(os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN"))
+    return bool(os.environ.get("IG_USER_ID") and (os.environ.get("IG_ACCESS_TOKEN") or _vault_ig()))
 
 
 def write_status():
@@ -333,11 +341,11 @@ def setup(step, value=""):
         cid, name = tg.find_chat_id()
         if not cid:
             sys.exit("No message found. Open your bot in Telegram, press Start (or send 'hi'), then run this again.")
-        from .ghsecret import save_secret
-        save_secret("TELEGRAM_CHAT_ID", str(cid))
-        os.environ["TELEGRAM_CHAT_ID"] = str(cid)
+        state = load(STATE, {})
+        state["telegram_chat_id"] = str(cid)
+        save(STATE, state)
         tg.say(f"Connected. Hi {name}, approvals for TrustBrokerHub posts will come here.")
-        print(f"Saved TELEGRAM_CHAT_ID for {name}.")
+        print(f"Saved the Telegram chat for {name}.")
     elif step == "canva-link":
         from .canva import auth_link, REDIRECT
         from .canva import _env
@@ -350,7 +358,7 @@ def setup(step, value=""):
     elif step == "canva-code":
         from .canva import connect
         connect(value)
-        print("Canva connected. CANVA_REFRESH_TOKEN saved.")
+        print("Canva connected. Login saved (encrypted) in data/vault.json.")
     elif step == "test":
         from . import llm
         for role in ("writer", "checker"):
@@ -368,9 +376,9 @@ def setup(step, value=""):
 
 def refresh_token():
     from .instagram import refresh_token as ig_refresh
-    from .ghsecret import save_secret
+    from . import vault
     token, expires = ig_refresh()
-    save_secret("IG_ACCESS_TOKEN", token)
+    vault.put("ig_access_token", token)
     print(f"Instagram token refreshed and saved; valid for about {int(expires or 0) // 86400} days.")
 
 

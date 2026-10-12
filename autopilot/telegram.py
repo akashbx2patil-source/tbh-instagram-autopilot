@@ -1,7 +1,7 @@
 """Phone approvals through a Telegram bot (free).
 
-Env: TELEGRAM_BOT_TOKEN (from @BotFather), TELEGRAM_CHAT_ID (your chat with the bot).
-Only messages and button taps from TELEGRAM_CHAT_ID are ever acted on.
+Env: TELEGRAM_BOT_TOKEN (from @BotFather). Your chat id comes from the TELEGRAM_CHAT_ID secret if set,
+otherwise from data/state.json (saved by Setup -> telegram). Only that chat is ever listened to.
 """
 import json, os
 import requests
@@ -11,12 +11,18 @@ class TelegramError(RuntimeError):
     pass
 
 
+def _saved_chat():
+    from pathlib import Path
+    p = Path(__file__).resolve().parent.parent / "data" / "state.json"
+    return str(json.loads(p.read_text()).get("telegram_chat_id") or "") if p.exists() else ""
+
+
 def ready():
-    return bool(os.environ.get("TELEGRAM_BOT_TOKEN") and os.environ.get("TELEGRAM_CHAT_ID"))
+    return bool(os.environ.get("TELEGRAM_BOT_TOKEN") and _chat())
 
 
 def _call(method, files=None, **params):
-    url = f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/{method}"
+    url = f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN'].strip()}/{method}"
     for k, v in list(params.items()):
         if isinstance(v, (dict, list)):
             params[k] = json.dumps(v)
@@ -28,7 +34,7 @@ def _call(method, files=None, **params):
 
 
 def _chat():
-    return os.environ["TELEGRAM_CHAT_ID"]
+    return (os.environ.get("TELEGRAM_CHAT_ID") or "").strip() or _saved_chat()
 
 
 def buttons(post_id):

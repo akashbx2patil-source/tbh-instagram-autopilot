@@ -27,12 +27,8 @@ Everything goes into **GitHub → this repo → Settings → Secrets and variabl
 - Settings → Actions → General → Workflow permissions → **Read and write permissions** → Save.
 - The repo must stay **Public** (Instagram downloads the images from it; keys stay hidden in Secrets).
 
-### ☐ 2. GitHub token `GH_PAT` (5 min) — required
-The autopilot uses it to save new Canva and Instagram logins by itself.
-1. GitHub → your photo → Settings → Developer settings → Personal access tokens → **Fine-grained tokens → Generate new token**.
-2. Repository access: **Only select repositories** → `tbh-instagram-autopilot`.
-3. Permissions → Repository permissions → **Secrets: Read and write**.
-4. Generate, copy, and save it as the secret **`GH_PAT`**.
+### ☐ 2. (No GitHub token needed)
+The Canva login and Telegram chat are saved inside the repo by the Setup workflow (the Canva login encrypted in `data/vault.json`). You can delete any old `GH_PAT` secret.
 
 ### ☐ 3. AI keys (5 min)
 A ChatGPT Plus or Gemini app subscription is **not** an API key. You need keys from the developer sites:
@@ -61,7 +57,7 @@ The brand template is already made in your Canva: **TBH autopilot template — s
 1. Instagram app → Profile → ☰ → Account type and tools → **Switch to professional account → Business**.
 2. developers.facebook.com → My Apps → **Create app** → use case "Manage messaging & content on Instagram".
 3. Instagram → **API setup with Instagram login** → Generate access tokens → Add account → log in → allow.
-4. Save the account ID as **`IG_USER_ID`** and the token as **`IG_ACCESS_TOKEN`**. The *Refresh Instagram token* workflow renews it every Monday.
+4. Save the account ID as **`IG_USER_ID`** and the token as **`IG_ACCESS_TOKEN`**. The *Refresh Instagram token* workflow renews it every Monday and keeps the new one (encrypted) in `data/vault.json`.
 
 ### ☐ 7. Background pictures (optional, recommended)
 Without this, every AI post uses the template's desk-and-lamp photo. To get a fresh picture each day, add the variable **`HERO_IMAGES`** = `gemini` (or `openai`).

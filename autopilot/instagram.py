@@ -14,9 +14,20 @@ class InstagramError(RuntimeError):
     pass
 
 
+def _token():
+    try:
+        from . import vault
+        t = vault.get("ig_access_token")  # renewed token, if the weekly refresh has run
+        if t:
+            return t
+    except Exception:
+        pass
+    return os.environ["IG_ACCESS_TOKEN"].strip()
+
+
 def _call(method, path, **params):
     url = f"{HOST}/{VERSION}/{path}"
-    params["access_token"] = os.environ["IG_ACCESS_TOKEN"]
+    params["access_token"] = _token()
     r = requests.request(method, url, data=params if method == "POST" else None,
                          params=params if method == "GET" else None, timeout=60)
     body = r.json() if r.headers.get("content-type", "").startswith(("application/json", "text/javascript")) else {"raw": r.text}
@@ -26,7 +37,7 @@ def _call(method, path, **params):
 
 
 def _container(**params):
-    user = os.environ["IG_USER_ID"]
+    user = os.environ["IG_USER_ID"].strip()
     try:
         return _call("POST", f"{user}/media", **params)["id"]
     except InstagramError as e:
@@ -49,7 +60,7 @@ def _wait_ready(container_id, tries=10):
 
 def publish(image_urls, caption, alt_text=""):
     """Publish a single image or a carousel (2-10 images). Returns the Instagram media id."""
-    user = os.environ["IG_USER_ID"]
+    user = os.environ["IG_USER_ID"].strip()
     if not 1 <= len(image_urls) <= 10:
         raise InstagramError("Instagram allows 1-10 images per post")
     if len(image_urls) == 1:
@@ -71,7 +82,7 @@ def publish(image_urls, caption, alt_text=""):
 def refresh_token():
     """Swap the current long-lived token for a fresh 60-day one. Returns (token, expires_in_seconds)."""
     r = requests.get("https://graph.instagram.com/refresh_access_token",
-                     params={"grant_type": "ig_refresh_token", "access_token": os.environ["IG_ACCESS_TOKEN"]}, timeout=60)
+                     params={"grant_type": "ig_refresh_token", "access_token": _token()}, timeout=60)
     body = r.json()
     if r.status_code >= 400 or "access_token" not in body:
         raise InstagramError(f"token refresh failed: {body}")

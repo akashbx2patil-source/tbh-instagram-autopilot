@@ -2,12 +2,12 @@
 
 Docs: https://www.canva.dev/docs/connect/
 Env: CANVA_CLIENT_ID, CANVA_CLIENT_SECRET, CANVA_REFRESH_TOKEN, CANVA_TEMPLATE_ID
-Canva refresh tokens work only once, so every run saves the new one back to the
-CANVA_REFRESH_TOKEN secret (through GH_PAT) before doing anything else.
+Canva refresh tokens work only once, so every run stores the new one, encrypted, in
+data/vault.json (committed by the workflow) before doing anything else.
 """
 import base64, hashlib, json, os, time, urllib.parse
 import requests
-from .ghsecret import save_secret
+from . import vault
 
 API = "https://api.canva.com/rest/v1"
 SCOPES = "asset:read asset:write brandtemplate:meta:read brandtemplate:content:read design:meta:read design:content:read design:content:write"
@@ -52,7 +52,7 @@ def connect(code):
         "grant_type": "authorization_code", "code": code, "code_verifier": _verifier(), "redirect_uri": REDIRECT})
     if r.status_code != 200:
         raise CanvaError(f"Canva did not accept the code ({r.status_code}): {r.text[:300]}. Codes expire after a few minutes; open the link again.")
-    save_secret("CANVA_REFRESH_TOKEN", r.json()["refresh_token"])
+    vault.put("canva_refresh_token", r.json()["refresh_token"])
 
 
 _token = None
@@ -63,12 +63,11 @@ def token():
     if _token:
         return _token
     r = requests.post(f"{API}/oauth/token", headers=_basic(), timeout=60, data={
-        "grant_type": "refresh_token", "refresh_token": _env("CANVA_REFRESH_TOKEN")})
+        "grant_type": "refresh_token", "refresh_token": vault.get("canva_refresh_token") or _env("CANVA_REFRESH_TOKEN")})
     if r.status_code != 200:
-        raise CanvaError(f"Canva login failed ({r.status_code}): {r.text[:300]}. Run the Setup workflow -> connect-canva again.")
+        raise CanvaError(f"Canva login failed ({r.status_code}): {r.text[:300]}. Run Setup -> canva-link and canva-code again.")
     body = r.json()
-    save_secret("CANVA_REFRESH_TOKEN", body["refresh_token"])  # the old one is now dead
-    os.environ["CANVA_REFRESH_TOKEN"] = body["refresh_token"]
+    vault.put("canva_refresh_token", body["refresh_token"])  # the old one is now dead
     _token = body["access_token"]
     return _token
 
