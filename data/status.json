@@ -1,31 +1,202 @@
 {
- "updated_at": "2026-10-12T14:42:28+05:30",
+ "updated_at": "2026-10-12T18:34:12+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
- "pending": {
-  "id": "carousel-c",
-  "source": "ready",
-  "status": "approved",
-  "theme": "verify",
-  "headline": "Check any broker in 4 steps",
-  "subline": "",
-  "cta": "",
-  "text": "Carousel, 6 slides: Check any broker in 4 steps / 01 Search the name / 02 Read who regulates it / 03 Check the score and reviews / 04 Compare before you commit / Deposit small. Withdraw small. Decide.",
-  "created_at": "2026-10-12T14:40:10+05:30",
-  "approved_at": "2026-10-12T14:42:26+05:30",
-  "warnings": [],
-  "canva_edit_url": null,
-  "kind": "carousel",
-  "images": [
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-01.jpg",
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-02.jpg",
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-03.jpg",
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-04.jpg",
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-05.jpg",
-   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-06.jpg"
-  ],
-  "publishes_at": "18:30 Asia/Kolkata"
- },
- "ready_left": 7,
- "recent": []
+ "paused": false,
+ "writer": "auto",
+ "checker": "auto",
+ "pending": null,
+ "queue": [
+  {
+   "id": "launch-6",
+   "folder": "assets/ready/launch-6-withdraw",
+   "theme": "scam",
+   "title": "Easy to deposit. Hard to withdraw?",
+   "text": "Headline: Easy to deposit. Hard to withdraw?\nSupporting line: Withdrawal complaints are the most common red flag in trader reviews. Read them first.\nFooter: Read the reviews before you deposit.",
+   "caption": "Deposits are instant. Withdrawals are where brokers show who they are. Delays, extra documents, \"bonus terms\" that lock your balance. Read the withdrawal reviews first.",
+   "hashtags": [
+    "#forex",
+    "#withdrawal",
+    "#brokerreview",
+    "#tradingsafety",
+    "#scamalert",
+    "#duediligence"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-6-withdraw/slide-01.jpg"
+   ]
+  },
+  {
+   "id": "launch-5",
+   "folder": "assets/ready/launch-5-licence-badge",
+   "theme": "reg",
+   "title": "A licence badge proves nothing.",
+   "text": "Headline: A licence badge proves nothing.\nSupporting line: Anyone can paste one on a website. The regulator's register is the only proof.\nFooter: Check the register, not the badge.",
+   "caption": "A regulator's logo on a website is an image. Anyone can paste one. The only proof is the regulator's own register, and it takes two minutes to search.",
+   "hashtags": [
+    "#forexscam",
+    "#brokerreview",
+    "#fca",
+    "#asic",
+    "#forex",
+    "#duediligence"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-5-licence-badge/slide-01.jpg"
+   ]
+  },
+  {
+   "id": "carousel-b",
+   "folder": "assets/ready/carousel-b-trust-score",
+   "theme": "verify",
+   "title": "How a Trust Score is built",
+   "text": "Carousel, 7 slides: What's inside a Trust Score? / 01 Regulation / 02 Reviews / 03 Transparency / 04 Footprint / 05 Complaints / No pay-to-rank. Read the methodology.",
+   "caption": "What's inside a Trust Score? Five factors: regulation, reviews, transparency, footprint and complaints. The formula and weights are published on our methodology page, and no broker can pay to move up.\n\nA score is where your research starts, not a recommendation.",
+   "hashtags": [
+    "#forex",
+    "#forexbroker",
+    "#brokerreview",
+    "#trustscore",
+    "#investorprotection",
+    "#duediligence"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-01.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-02.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-03.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-04.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-05.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-06.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-b-trust-score/slide-07.jpg"
+   ]
+  },
+  {
+   "id": "launch-4",
+   "folder": "assets/ready/launch-4-any-broker",
+   "theme": "verify",
+   "title": "Any broker. Checked in seconds.",
+   "text": "Headline: Any broker. Checked in seconds.\nSupporting line: Regulation, Trust Score, fees and reviews on one screen. Before you deposit.\nButton: Check a broker",
+   "caption": "38,680 brokers. One search. Regulation, Trust Score, fees and reviews on one screen, before any money moves. Link in bio.",
+   "hashtags": [
+    "#forexbroker",
+    "#brokerreview",
+    "#forex",
+    "#duediligence",
+    "#tradingsafety",
+    "#forextrading"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-4-any-broker/slide-01.jpg"
+   ]
+  },
+  {
+   "id": "launch-2",
+   "folder": "assets/ready/launch-2-before-you-trust",
+   "theme": "verify",
+   "title": "Before you trust a broker…",
+   "text": "Headline: Before you trust a broker...\nSupporting line: Check the details. Check the licence. Check the reputation.\nFooter: Research. Compare. Decide.",
+   "caption": "Before you deposit, three checks take ten minutes. Is the licence real on the regulator's own register. Do the company details match. What do verified traders say about withdrawals.",
+   "hashtags": [
+    "#forex",
+    "#brokerreview",
+    "#tradingsafety",
+    "#duediligence",
+    "#forextrading",
+    "#investorprotection"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-2-before-you-trust/slide-01.jpg"
+   ]
+  },
+  {
+   "id": "carousel-a",
+   "folder": "assets/ready/carousel-a-meet-tbh",
+   "theme": "verify",
+   "title": "Meet TrustBrokerHub",
+   "text": "Carousel, 6 slides: 38,680 brokers. Which one do you trust? / 38,680 brokers and exchanges in one database / 105 regulators across 140 countries / A Trust Score on every broker / Scam alerts, trader reviews, side-by-side compare / Look them up before you pay them.",
+   "caption": "38,680 brokers and exchanges. One question before you deposit: who are you actually dealing with?\n\nTrustBrokerHub checks forex brokers, crypto exchanges and prop firms against 105 regulators in 140 countries. Every broker gets a transparent Trust Score, and scam alerts, reviews and a compare tool sit in one place.\n\nSearch any broker before you deposit. Link in bio.",
+   "hashtags": [
+    "#forex",
+    "#forexbroker",
+    "#brokerreview",
+    "#investorprotection",
+    "#scamalert",
+    "#duediligence",
+    "#tradingsafety",
+    "#cryptoexchange"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-01.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-02.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-03.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-04.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-05.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-06.jpg"
+   ]
+  },
+  {
+   "id": "launch-1",
+   "folder": "assets/ready/launch-1-top-broker",
+   "theme": "verify",
+   "title": "Top broker. According to who?",
+   "text": "Headline: Top broker. According to who?\nSupporting line: Not every broker ranking tells the full story.\nFooter: Look beyond the ranking.",
+   "caption": "\"Top broker\" is a claim, not a fact. Most lists never say who paid for the position or what was measured. Before a ranking convinces you, ask what sits behind it.",
+   "hashtags": [
+    "#forexbroker",
+    "#brokerreview",
+    "#forex",
+    "#tradingsafety",
+    "#duediligence",
+    "#forextrading"
+   ],
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-1-top-broker/slide-01.jpg"
+   ]
+  }
+ ],
+ "ideas": [],
+ "recent": [
+  {
+   "date": "2026-10-12",
+   "posted_at": "2026-10-12T18:34:11+05:30",
+   "id": "carousel-c",
+   "source": "ready",
+   "theme": "verify",
+   "kind": "carousel",
+   "topic": "Check any broker in 4 steps",
+   "title": "Check any broker in 4 steps",
+   "caption": "Check any broker in 4 steps: search the name, confirm the licence on the regulator's own register, check the Trust Score and reviews, then compare.\n\nBefore you fund an account properly, deposit small and test a withdrawal. Save this for the next time someone sends you a 'great broker'.\n\nResearch only, not financial advice.\n\n#forex #forexbroker #brokerreview #scamalert #duediligence #tradingsafety",
+   "files": [
+    "assets/ready/carousel-c-four-steps/slide-01.jpg",
+    "assets/ready/carousel-c-four-steps/slide-02.jpg",
+    "assets/ready/carousel-c-four-steps/slide-03.jpg",
+    "assets/ready/carousel-c-four-steps/slide-04.jpg",
+    "assets/ready/carousel-c-four-steps/slide-05.jpg",
+    "assets/ready/carousel-c-four-steps/slide-06.jpg"
+   ],
+   "instagram_media_id": "18342013084248497",
+   "permalink": "https://www.instagram.com/p/DeZS_7sm4TB/",
+   "approved_by": "phone",
+   "images": [
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-01.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-02.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-03.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-04.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-05.jpg",
+    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-06.jpg"
+   ]
+  }
+ ],
+ "posted_count": 1,
+ "rejected": [
+  {
+   "id": "launch-7",
+   "topic": "Same name. Different company.",
+   "headline": "Same name. Different company.",
+   "reason": "",
+   "at": "2026-10-12T14:40:09+05:30",
+   "by": "phone"
+  }
+ ],
+ "issues": []
 }
