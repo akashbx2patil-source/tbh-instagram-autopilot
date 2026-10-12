@@ -88,7 +88,7 @@ Other controls (GitHub → Settings → Secrets and variables → Actions → **
 | `POST_AT` | posting time, India time | `18:30` |
 | `WRITER` / `CHECKER` | `gemini` or `openai` | Gemini writes, ChatGPT checks |
 | `HERO_IMAGES` | `gemini`, `openai` or `off` | `off` |
-| `GEMINI_MODEL` / `OPENAI_MODEL` | model names | `gemini-2.5-flash` / `gpt-4.1-mini` |
+| `GEMINI_MODEL` / `OPENAI_MODEL` | model names | newest Gemini Flash / `gpt-4.1-mini` |
 | `CANVA_TEMPLATE_ID` | a different Canva brand template | `EAHXu-PJ0RI` |
 
 Approval checks run every 15 minutes between 08:30 and 00:30 India time. GitHub sometimes starts them a few minutes late.
