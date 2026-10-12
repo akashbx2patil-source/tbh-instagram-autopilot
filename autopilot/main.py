@@ -20,17 +20,23 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 import requests
 
+from . import settings as cfg
+SETTINGS = cfg.apply()  # admin-panel settings win over GitHub variables
 from . import content, telegram as tg
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA, MEDIA = ROOT / "data", ROOT / "media"
 PENDING, POSTED, STATE = DATA / "pending.json", DATA / "posted.json", DATA / "state.json"
 READY, REJECTED, STATUS = DATA / "ready.json", DATA / "rejected.json", DATA / "status.json"
+IDEAS, EDITS, ISSUES = DATA / "ideas.json", DATA / "admin_edits.json", DATA / "issues.json"
+# Files the admin panel writes (the autopilot only reads them): settings.json, ready.json, ideas.json,
+# admin_edits.json. Files the autopilot writes: state, pending, posted, rejected, issues, status, vault.
 TZ = ZoneInfo(os.environ.get("TIMEZONE") or "Asia/Kolkata")
 POST_AT = os.environ.get("POST_AT") or "18:30"
 MAX_PER_DAY = int(os.environ.get("MAX_POSTS_CREATED_PER_DAY") or "4")
 LISTEN_MIN = float(os.environ.get("LISTEN_MINUTES") or "0")
 DRY_RUN = (os.environ.get("DRY_RUN") or "false").lower() == "true"
+PUBLISH_NOW = (os.environ.get("PUBLISH_NOW") or "false").lower() == "true"
 
 
 # ---------- small helpers ----------
@@ -69,16 +75,26 @@ def instagram_ready():
 
 
 def write_status():
-    """data/status.json: one file the admin panel (or anyone) can read to see the autopilot's state."""
-    p, posted = load(PENDING, None), load(POSTED, [])
+    """data/status.json: everything the admin panel shows, in one file."""
+    p, posted, state = load(PENDING, None), load(POSTED, []), load(STATE, {})
     pend = None
     if p:
-        pend = {k: p.get(k) for k in ("id", "source", "status", "theme", "headline", "subline", "cta", "text",
-                                       "created_at", "approved_at", "warnings", "canva_edit_url", "kind")}
+        pend = {k: p.get(k) for k in ("id", "source", "kind", "status", "theme", "topic", "headline", "subline", "cta", "text",
+                                       "caption", "hashtags", "created_at", "approved_at", "approved_by", "warnings",
+                                       "canva_edit_url", "edit_rev", "edit_error", "idea")}
         pend["images"] = [raw_url(f) for f in p["files"]]
-        pend["publishes_at"] = f"{POST_AT} {TZ.key}" if p["status"] == "approved" else None
-    new = {"post_at": POST_AT, "timezone": TZ.key, "pending": pend, "ready_left": len(load(READY, [])),
-           "recent": [{**r, "images": [raw_url(f) for f in r.get("files", [])]} for r in posted[-20:][::-1]]}
+        pend["publishes_at"] = POST_AT if p["status"] == "approved" else None
+    ideas_done = set(state.get("ideas_done", []))
+    new = {"post_at": POST_AT, "timezone": TZ.key, "paused": bool(SETTINGS.get("paused")),
+           "writer": os.environ.get("WRITER") or "auto", "checker": os.environ.get("CHECKER") or "auto",
+           "pending": pend,
+           "queue": [{**r, "images": [raw_url(str(f.relative_to(ROOT))) for f in sorted((ROOT / r["folder"]).glob("slide-*.*"))]}
+                     for r in _ready_left(state)],
+           "ideas": [i for i in load(IDEAS, []) if i.get("id") not in ideas_done],
+           "recent": [{**r, "images": [raw_url(f) for f in r.get("files", [])]} for r in posted[-60:][::-1]],
+           "posted_count": len(posted),
+           "rejected": load(REJECTED, [])[-20:][::-1],
+           "issues": load(ISSUES, [])[-30:][::-1]}
     old = load(STATUS, {})
     if {k: v for k, v in old.items() if k != "updated_at"} != new:  # only touch the file when something changed
         save(STATUS, {"updated_at": iso(), **new})
@@ -99,10 +115,13 @@ def _make_ai_post(state):
     from . import canva, llm
     k = state.get("next_ai_index", 1)
     state["next_ai_index"] = k + 1
-    pid, theme = f"ai{k:04d}", content.THEMES[k % len(content.THEMES)]
+    themes = [t for t in SETTINGS.get("themes") or [] if t in content.THEMES] or content.THEMES
+    pid, theme = f"ai{k:04d}", themes[k % len(themes)]
+    idea = _take_idea(state)
     history, feedback = _feedback_from_rejections(), ""
     for attempt in range(5):
-        p = content.write_post(theme, _used_topics(), "\n".join(x for x in (history, feedback) if x))
+        p = content.write_post(theme, _used_topics(), "\n".join(x for x in (history, feedback) if x),
+                               topic_request=idea, extra=SETTINGS.get("extra_instructions", ""))
         errs = content.validate_post(p)
         if not errs:
             v = content.check_text(p)
@@ -114,7 +133,7 @@ def _make_ai_post(state):
     else:
         raise RuntimeError(f"No post passed the checks after 5 attempts. Last problems:\n{feedback}")
 
-    warnings, png, edit_url = [], None, ""
+    warnings, png, edit_url, asset = [], None, "", None
     for attempt in range(2):
         hero = llm.hero_image(content.HERO_STYLE + p["hero_prompt"])
         asset = canva.upload_image(hero, f"{pid}-hero.png") if hero else None
@@ -131,15 +150,20 @@ def _make_ai_post(state):
     (ROOT / rel).write_bytes(png)
     return {"id": pid, "source": "ai", "kind": "single", "theme": theme, "topic": p["topic"], "headline": p["headline"],
             "subline": p["subline"], "cta": p["cta"], "hero_prompt": p["hero_prompt"], "files": [rel],
-            "canva_edit_url": edit_url, "warnings": warnings}
+            "canva_edit_url": edit_url, "warnings": warnings, "hero_asset_id": asset, "idea": idea}
 
 
-def _take_ready():
-    ready = load(READY, [])
-    if not ready:
+def _ready_left(state=None):
+    done = set((state or load(STATE, {})).get("ready_done", []))
+    return [r for r in load(READY, []) if r["id"] not in done]
+
+
+def _take_ready(state):
+    left = _ready_left(state)
+    if not left:
         return None
-    r = ready.pop(0)
-    save(READY, ready)
+    r = left[0]
+    state.setdefault("ready_done", []).append(r["id"])
     folder = ROOT / r["folder"]
     files = sorted(str(f.relative_to(ROOT)) for f in folder.glob("slide-*.*"))
     if not files:
@@ -149,7 +173,19 @@ def _take_ready():
             "caption": r.get("caption"), "hashtags": r.get("hashtags")}
 
 
+def _take_idea(state):
+    done = set(state.get("ideas_done", []))
+    for i in load(IDEAS, []):
+        if i.get("id") and i["id"] not in done and i.get("topic", "").strip():
+            state.setdefault("ideas_done", []).append(i["id"])
+            return i["topic"].strip()
+    return ""
+
+
 def create(force=False):
+    if SETTINGS.get("paused"):
+        print("Paused in the admin panel; not making a post.")
+        return
     state, pending = load(STATE, {}), load(PENDING, None)
     if pending:
         print(f"{pending['id']} is still {pending['status']}; not making a new post.")
@@ -161,12 +197,12 @@ def create(force=False):
     if made.get("date") != today:
         made = {"date": today, "count": 0}
     if made["count"] >= MAX_PER_DAY:
-        tg.say(f"I've already made {MAX_PER_DAY} posts today, so I'll stop for now. Send /new tomorrow, or raise MAX_POSTS_CREATED_PER_DAY.")
+        tg.say(f"I've already made {MAX_PER_DAY} posts today, so I'll stop for now. Send /new tomorrow, or raise the daily limit in the admin panel.")
         return
     made["count"] += 1
     state["made"] = made
 
-    post = _take_ready() or _make_ai_post(state)
+    post = _take_ready(state) or _make_ai_post(state)
     post.update(status="awaiting_approval", created_at=iso())
     save(STATE, state)
     save(PENDING, post)
@@ -180,17 +216,89 @@ def create(force=False):
     lines += ["", f"Approve to publish at {POST_AT} India time (or right away if that has passed). "
               "Reject to get a new one; you can then reply with what to change."]
     text = "\n".join(lines)
-    if tg.ready():
-        images = [(Path(f).name, (ROOT / f).read_bytes()) for f in post["files"]]
-        if len(images) == 1:
-            post["telegram_message_id"] = tg.send_for_approval(images[0][1], text, post["id"], images[0][0])
-        else:
-            post["telegram_message_id"] = tg.send_album(images, text, post["id"])
-        save(PENDING, post)
-    else:
-        print("::warning::Telegram is not set up, so nobody was asked to approve.\n" + text)
+    _send_for_approval(post, text)
+    save(PENDING, post)
     write_status()
     print(f"Created {post['id']} and asked for approval.")
+
+
+# ---------- admin panel edits ----------
+def _send_for_approval(post, text):
+    if not tg.ready():
+        print("::warning::Telegram is not set up, so nobody was asked to approve.\n" + text)
+        return
+    images = [(Path(f).name, (ROOT / f).read_bytes()) for f in post["files"]]
+    if len(images) == 1:
+        post["telegram_message_id"] = tg.send_for_approval(images[0][1], text, post["id"], images[0][0])
+    else:
+        post["telegram_message_id"] = tg.send_album(images, text, post["id"])
+
+
+def _apply_admin_edits():
+    """Apply edits made in the admin panel (data/admin_edits.json) to the post that is waiting."""
+    p = load(PENDING, None)
+    if not p:
+        return
+    e = load(EDITS, {}).get(p["id"])
+    if not e or int(e.get("rev", 0)) <= int(p.get("edit_rev", 0)):
+        return
+    p["edit_rev"] = int(e["rev"])
+    p.pop("edit_error", None)
+    if "caption" in e:
+        if str(e["caption"] or "").strip():
+            p["caption"] = str(e["caption"]).strip()
+        else:
+            p.pop("caption", None)  # blank = let the AI write it
+    if "hashtags" in e:
+        tags = e["hashtags"] if isinstance(e["hashtags"], list) else str(e["hashtags"] or "").replace(",", " ").split()
+        tags = ["#" + t.lstrip("#").lower() for t in tags if t.strip("# ")]
+        if tags:
+            p["hashtags"] = tags
+        else:
+            p.pop("hashtags", None)
+    new = {k: str(e[k]).replace("\r", "") for k in ("headline", "subline", "cta") if e.get(k) not in (None, "")}
+    if p["source"] == "ai" and any(new.get(k) != p.get(k) for k in new):
+        cand = {**p, **new}
+        errs = content.validate_post(cand)
+        if errs:
+            p["edit_error"] = errs
+            save(PENDING, p)
+            tg.say(f"Your edit to {p['id']} was not applied: " + "; ".join(errs))
+            return
+        from . import canva
+        design_id, edit_url = canva.fill_template({"HEADLINE": cand["headline"], "SUBLINE": cand["subline"], "CTA": cand["cta"]},
+                                                  f"Autopilot {p['id']} edit {p['edit_rev']}", p.get("hero_asset_id"))
+        img = canva.export_jpg(design_id)
+        rel = f"media/{now():%Y-%m-%d}-{p['id']}/slide-01-r{p['edit_rev']}.jpg"
+        (ROOT / rel).parent.mkdir(parents=True, exist_ok=True)
+        (ROOT / rel).write_bytes(img)
+        if p.get("telegram_message_id") and p["status"] == "awaiting_approval":
+            tg.close_buttons(p["telegram_message_id"], f"{p['id']} was edited in the admin panel; new version below.")
+        p.update(new, files=[rel], canva_edit_url=edit_url, status="awaiting_approval", warnings=[])
+        p.pop("approved_at", None)
+        _send_for_approval(p, f"Edited post for approval ({p['id']})\n\n{p['headline'].replace(chr(10), ' ')}\n{p['subline']}")
+    save(PENDING, p)
+    print(f"Applied admin edit {p['edit_rev']} to {p['id']}")
+
+
+HINTS = [("503", "Gemini was overloaded. It retries by itself; nothing to do."),
+         ("high demand", "Gemini was overloaded. It retries by itself; nothing to do."),
+         ("no longer available", "The AI model was retired. Leave the model setting blank so it picks the newest."),
+         ("Canva login failed", "Canva needs reconnecting: GitHub Actions -> Setup -> canva-link, then canva-code."),
+         ("access token", "The Instagram token may have expired: generate a new one and update the IG_ACCESS_TOKEN secret."),
+         ("Session has expired", "The Instagram token expired: generate a new one and update the IG_ACCESS_TOKEN secret."),
+         ("API key", "An AI key is missing or wrong: check GEMINI_API_KEY / OPENAI_API_KEY in GitHub secrets."),
+         ("No post passed the checks", "The AI could not write a post that passed the rules. Try again, or simplify the extra instructions.")]
+
+
+def record_issue(step, err):
+    msg = str(err).strip()
+    hint = next((h for k, h in HINTS if k.lower() in msg.lower()), "")
+    issues = load(ISSUES, [])
+    issues.append({"at": iso(), "step": step, "message": msg[:1500], "hint": hint,
+                   "run": f"https://github.com/{os.environ.get('GITHUB_REPOSITORY', '')}/actions/runs/{os.environ.get('GITHUB_RUN_ID', '')}"})
+    save(ISSUES, issues[-50:])
+    tg.say(f"Autopilot problem during {step}: {msg[:300]}" + (f"\nWhat to do: {hint}" if hint else ""))
 
 
 # ---------- check (approvals + publishing) ----------
@@ -225,8 +333,9 @@ def _time_to_post():
 def publish(pending):
     post_text = content.post_text(pending)
     feedback, cap = "", None
-    if pending.get("caption") and pending.get("hashtags"):  # ready-made post with an approved caption
-        cap = content.final_caption({"caption": pending["caption"], "hashtags": pending["hashtags"]})
+    always = SETTINGS.get("always_hashtags") or []
+    if pending.get("caption"):  # caption from a ready-made post or written in the admin panel
+        cap = content.final_caption({"caption": pending["caption"], "hashtags": pending.get("hashtags") or []}, always)
     for attempt in range(0 if cap else 4):
         c = content.write_caption(post_text, feedback)
         errs = content.validate_caption(c)
@@ -234,7 +343,7 @@ def publish(pending):
             v = content.check_caption(post_text, c)
             errs = [] if v.get("ok") else (v.get("issues") or ["rejected by the checker"])
         if not errs:
-            cap = content.final_caption(c)
+            cap = content.final_caption(c, always)
             break
         feedback = "\n".join(f"- {e}" for e in errs)
         print(f"Caption attempt {attempt + 1} rejected:\n{feedback}")
@@ -262,11 +371,17 @@ def publish(pending):
         else:
             raise RuntimeError(f"Image not reachable: {u}. Is the repository public?")
     media_id = ig_publish(urls, cap, alt.strip())
+    try:
+        from .instagram import permalink
+        link = permalink(media_id)
+    except Exception:
+        link = ""
     posted = load(POSTED, [])
     posted.append({"date": now().strftime("%Y-%m-%d"), "posted_at": iso(), "id": pending["id"], "source": pending["source"],
                    "theme": pending.get("theme"), "kind": pending.get("kind"), "topic": pending.get("topic"),
                    "title": (pending.get("headline") or pending.get("topic", "")).replace("\n", " "),
-                   "caption": cap, "files": pending["files"], "instagram_media_id": media_id})
+                   "caption": cap, "files": pending["files"], "instagram_media_id": media_id, "permalink": link,
+                   "approved_by": pending.get("approved_by", "")})
     save(POSTED, posted)
     PENDING.unlink(missing_ok=True)
     tg.say(f"Posted {pending['id']} to Instagram.\n\n{cap[:600]}")
@@ -276,13 +391,14 @@ def publish(pending):
 def _status_text():
     p = load(PENDING, None)
     if not p:
-        return f"Nothing waiting. Ready-made posts left: {len(load(READY, []))}. Send /new to make one now."
+        return f"Nothing waiting. Ready-made posts left: {len(_ready_left())}. Send /new to make one now."
     head = (p.get("headline") or p.get("topic", "")).replace("\n", " ")
     return f"{p['id']} is {p['status'].replace('_', ' ')}: {head}"
 
 
 def _pass(long_poll=0):
     """Read new decisions, act on them, make replacements, publish if due. Returns True if anything changed."""
+    _apply_admin_edits()
     state, pending = load(STATE, {}), load(PENDING, None)
     before = json.dumps([state, pending, load(POSTED, [])], sort_keys=True)
     events = []
@@ -338,7 +454,7 @@ def _pass(long_poll=0):
     elif pending and want_new:
         tg.say(f"{pending['id']} is still {pending['status'].replace('_', ' ')}. Reject it first if you want a new one.")
     pending = load(PENDING, None)
-    if pending and pending["status"] == "approved" and _time_to_post():
+    if pending and pending["status"] == "approved" and (_time_to_post() or PUBLISH_NOW) and not SETTINGS.get("paused"):
         publish(pending)
     write_status()
     return json.dumps([load(STATE, {}), load(PENDING, None), load(POSTED, [])], sort_keys=True) != before
@@ -433,18 +549,28 @@ def refresh_token():
 
 def status():
     print(_status_text())
-    for i, r in enumerate(load(READY, [])):
+    for i, r in enumerate(_ready_left()):
         print(f"  ready {i + 1}. {r['id']}: {r['title']}")
 
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
-    if cmd == "setup":
-        setup(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")
-    else:
-        if cmd == "create":
+    try:
+        if cmd == "setup":
+            setup(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")
+        elif cmd == "create":
+            _apply_admin_edits()
             create()
+            write_status()
             _git_save(f"Autopilot {now():%Y-%m-%d %H:%M}")
             listen()
         else:
             {"check": check, "refresh-token": refresh_token, "status": status}[cmd]()
+    except Exception as e:
+        if cmd != "setup":
+            try:
+                record_issue(cmd, e)
+                write_status()
+            except Exception as e2:
+                print(f"could not record the issue: {e2}")
+        raise

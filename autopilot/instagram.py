@@ -87,3 +87,8 @@ def refresh_token():
     if r.status_code >= 400 or "access_token" not in body:
         raise InstagramError(f"token refresh failed: {body}")
     return body["access_token"], body.get("expires_in")
+
+
+def permalink(media_id):
+    """The public Instagram link of a published post."""
+    return _call("GET", media_id, fields="permalink").get("permalink", "")

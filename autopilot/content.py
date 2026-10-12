@@ -94,7 +94,7 @@ def validate_post(p):
     return errs
 
 
-def write_post(theme, used_topics, feedback=""):
+def write_post(theme, used_topics, feedback="", topic_request="", extra=""):
     system = RULES + "\nAPPROVED FACTS\n" + APPROVED_FACTS + """
 TASK: write ONE single-image Instagram post that teaches one concrete, useful thing.
 It is placed into a fixed Canva design: a big 3-line headline at the top, one supporting line under it,
@@ -108,11 +108,18 @@ Return JSON with exactly these keys:
 - "cta": footer line, max 34 characters, calm, no question, e.g. "Check the register, not the badge."
 - "hero_prompt": one sentence describing a photoreal object scene (a metaphor for the idea) for the background picture. Objects only, no people's faces, no text or screens.
 """
-    user = (f"Theme: {theme} ({THEME_NAMES[theme]}).\n\nTopics already used (pick something different):\n"
+    if extra.strip():
+        system += "\nEXTRA INSTRUCTIONS FROM THE OWNER (follow them unless they break a non-negotiable rule):\n" + extra.strip() + "\n"
+    if topic_request:
+        theme_line = f"Write about this topic the owner asked for: {topic_request}\n(Use the closest theme of: {', '.join(THEMES)}.)"
+    else:
+        theme_line = f"Theme: {theme} ({THEME_NAMES[theme]})."
+    user = (f"{theme_line}\n\nTopics already used (pick something different):\n"
             + "\n".join(f"- {t}" for t in used_topics[-150:])
             + (f"\n\nYour last attempt was rejected. Fix these problems:\n{feedback}" if feedback else ""))
     p = llm.ask_json("writer", system, user, temperature=0.9)
-    p["theme"] = theme
+    if p.get("theme") not in THEMES or not topic_request:
+        p["theme"] = theme
     return p
 
 
@@ -184,8 +191,8 @@ def check_caption(post_text, c):
     return llm.ask_json("checker", system, user, temperature=0)
 
 
-def final_caption(c):
-    tags = list(dict.fromkeys(str(t).lower() for t in c["hashtags"]))  # de-duplicate, keep order
+def final_caption(c, always=()):
+    tags = list(dict.fromkeys(str(t).strip().lower() for t in list(c["hashtags"]) + list(always or []) if str(t).strip()))
     return f"{c['caption'].strip()}\n\n{DISCLAIMER}\n\n{' '.join(tags)}"
 
 

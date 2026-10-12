@@ -1,0 +1,18 @@
+{
+ "paused": false,
+ "post_at": "18:30",
+ "writer": "",
+ "checker": "",
+ "gemini_model": "",
+ "hero_images": "off",
+ "canva_template_id": "",
+ "max_posts_per_day": 4,
+ "themes": [
+  "scam",
+  "basics",
+  "reg",
+  "verify"
+ ],
+ "extra_instructions": "",
+ "always_hashtags": []
+}

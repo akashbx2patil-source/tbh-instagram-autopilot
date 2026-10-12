@@ -11,7 +11,7 @@ on:
       action:
         description: "What to do"
         type: choice
-        options: [check, create, approve, reject]
+        options: [check, create, approve, reject, publish-now]
         default: check
       post_id:
         description: "Post id (for approve / reject; blank = the one waiting)"
@@ -56,7 +56,8 @@ jobs:
       POST_AT: ${{ vars.POST_AT || '18:30' }}
       LISTEN_MINUTES: ${{ vars.LISTEN_MINUTES || '12' }}
       DRY_RUN: ${{ inputs.dry_run || 'false' }}
-      DECISION: ${{ (inputs.action == 'approve' || inputs.action == 'reject') && inputs.action || '' }}
+      DECISION: ${{ (inputs.action == 'approve' || inputs.action == 'reject') && inputs.action || (inputs.action == 'publish-now' && 'approve' || '') }}
+      PUBLISH_NOW: ${{ inputs.action == 'publish-now' && 'true' || 'false' }}
       DECISION_POST_ID: ${{ inputs.post_id }}
       REASON: ${{ inputs.reason }}
     steps:
