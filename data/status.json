@@ -1,18 +1,18 @@
 {
- "updated_at": "2026-10-12T14:40:15+05:30",
+ "updated_at": "2026-10-12T14:42:28+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "pending": {
   "id": "carousel-c",
   "source": "ready",
-  "status": "awaiting_approval",
+  "status": "approved",
   "theme": "verify",
   "headline": "Check any broker in 4 steps",
   "subline": "",
   "cta": "",
   "text": "Carousel, 6 slides: Check any broker in 4 steps / 01 Search the name / 02 Read who regulates it / 03 Check the score and reviews / 04 Compare before you commit / Deposit small. Withdraw small. Decide.",
   "created_at": "2026-10-12T14:40:10+05:30",
-  "approved_at": null,
+  "approved_at": "2026-10-12T14:42:26+05:30",
   "warnings": [],
   "canva_edit_url": null,
   "kind": "carousel",
@@ -24,7 +24,7 @@
    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-05.jpg",
    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-c-four-steps/slide-06.jpg"
   ],
-  "publishes_at": null
+  "publishes_at": "18:30 Asia/Kolkata"
  },
  "ready_left": 7,
  "recent": []

@@ -26,7 +26,9 @@
   "#duediligence",
   "#tradingsafety"
  ],
- "status": "awaiting_approval",
+ "status": "approved",
  "created_at": "2026-10-12T14:40:10+05:30",
- "telegram_message_id": 18
+ "telegram_message_id": 18,
+ "approved_at": "2026-10-12T14:42:26+05:30",
+ "approved_by": "phone"
 }
