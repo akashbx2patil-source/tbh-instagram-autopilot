@@ -1,7 +1,7 @@
 """One small wrapper around Gemini and ChatGPT (OpenAI), so either can write or check posts.
 
 Env:
-  GEMINI_API_KEY  / GEMINI_MODEL  (default gemini-2.5-flash)
+  GEMINI_API_KEY  / GEMINI_MODEL  (default: newest Flash model your key can use)
   OPENAI_API_KEY  / OPENAI_MODEL  (default gpt-4.1-mini)
   WRITER  = gemini | openai   which AI writes posts and captions
   CHECKER = gemini | openai   which AI checks them (a different AI from the writer is best)
