@@ -367,10 +367,12 @@ def setup(step, value=""):
         from . import llm
         for role in ("writer", "checker"):
             print(f"{role}: {llm.provider(role)} ->", llm.ask_json(role, "Reply in JSON.", 'Return {"ok": true}'))
-        if os.environ.get("CANVA_REFRESH_TOKEN"):
-            from . import canva
+        from . import canva, vault
+        if os.environ.get("CANVA_REFRESH_TOKEN") or vault.get("canva_refresh_token"):
             canva.token()
             print("Canva: login works.")
+        else:
+            print("Canva: not connected yet (run canva-link and canva-code)")
         print("Telegram:", "ready" if tg.ready() else "not set up")
         tg.say("Test message from the TrustBrokerHub autopilot. Everything that printed OK is working.")
         print("Instagram:", "secrets present" if instagram_ready() else "not set up")
