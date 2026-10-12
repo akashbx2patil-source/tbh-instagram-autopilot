@@ -17,6 +17,10 @@ class LLMError(RuntimeError):
     pass
 
 
+class LLMBusy(LLMError):
+    """The model is overloaded / rate-limited / temporarily down: another model may work."""
+
+
 def _have(p):
     return bool(os.environ.get("GEMINI_API_KEY" if p == "gemini" else "OPENAI_API_KEY"))
 
@@ -40,39 +44,62 @@ def _post(url, headers, body, tries=4):
     for i in range(tries):
         r = requests.post(url, headers=headers, json=body, timeout=TIMEOUT)
         if r.status_code in (429, 500, 502, 503, 504) and i < tries - 1:
-            time.sleep(15 * (i + 1))
+            time.sleep(20 * (i + 1))
             continue
         if r.status_code >= 400:
-            raise LLMError(f"{url.split('?')[0]} -> {r.status_code}: {r.text[:500]}")
+            cls = LLMBusy if r.status_code in (404, 429, 500, 502, 503, 504) else LLMError
+            raise cls(f"{url.split('?')[0]} -> {r.status_code}: {r.text[:500]}")
         return r.json()
 
 
 _gemini_cache = {}
 
 
-def _gemini_model(kind="text"):
-    """The Gemini model to use. GEMINI_MODEL / GEMINI_IMAGE_MODEL win; otherwise ask Google which
-    models this key can use and take the newest Flash model, so retired models never break the run."""
-    override = (os.environ.get("GEMINI_IMAGE_MODEL" if kind == "image" else "GEMINI_MODEL") or "").strip()
-    if override:
-        return override
+def _gemini_models(kind="text"):
+    """Gemini models to try, best first. GEMINI_MODEL / GEMINI_IMAGE_MODEL go first if set; then the
+    Flash models this key can use, newest first, so a retired or overloaded model never stops the run."""
     if kind in _gemini_cache:
         return _gemini_cache[kind]
+    override = (os.environ.get("GEMINI_IMAGE_MODEL" if kind == "image" else "GEMINI_MODEL") or "").strip()
     r = requests.get("https://generativelanguage.googleapis.com/v1beta/models", timeout=60,
                      params={"pageSize": 1000}, headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip()})
     if r.status_code >= 400:
+        if override:
+            return [override]
         raise LLMError(f"Could not list Gemini models ({r.status_code}): {r.text[:300]}")
     names = [m["name"].split("/", 1)[-1] for m in r.json().get("models", [])
              if "generateContent" in m.get("supportedGenerationMethods", [])]
-    pat = r"gemini-(\d+(?:\.\d+)?)-flash-image(?:-preview)?(?:-[\w-]+)?$" if kind == "image" else r"gemini-(\d+(?:\.\d+)?)-flash$"
-    found = [(float(m.group(1)), n) for n in names for m in [re.match(pat, n)] if m]
-    if not found and kind == "text":  # no stable Flash: accept a preview Flash
-        found = [(float(m.group(1)), n) for n in names for m in [re.match(r"gemini-(\d+(?:\.\d+)?)-flash-preview[\w-]*$", n)] if m]
-    if not found:
+    if kind == "image":
+        pats = [r"gemini-(\d+(?:\.\d+)?)-flash-image[\w-]*$"]
+    else:  # stable Flash first, then Flash previews, then Flash-Lite
+        pats = [r"gemini-(\d+(?:\.\d+)?)-flash$", r"gemini-(\d+(?:\.\d+)?)-flash-preview[\w-]*$",
+                r"gemini-(\d+(?:\.\d+)?)-flash-lite$"]
+    ordered = []
+    for pat in pats:
+        found = sorted(((float(m.group(1)), n) for n in names for m in [re.match(pat, n)] if m), reverse=True)
+        ordered += [n for _, n in found if n not in ordered]
+    if override:
+        ordered = [override] + [n for n in ordered if n != override]
+    if not ordered:
         raise LLMError(f"No Gemini Flash {kind} model available to this key. Models seen: {', '.join(names[:30])}")
-    _gemini_cache[kind] = max(found)[1]
-    print(f"Using Gemini model {_gemini_cache[kind]}")
+    _gemini_cache[kind] = ordered[:4]
     return _gemini_cache[kind]
+
+
+def _gemini(kind, body):
+    """Call Gemini, moving to the next model when one is busy or retired."""
+    last = None
+    for model in _gemini_models(kind):
+        try:
+            out = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                        {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip(), "Content-Type": "application/json"},
+                        body, tries=3)
+            print(f"Gemini model used: {model}")
+            return out
+        except LLMBusy as e:
+            print(f"::warning::{model} unavailable right now, trying the next model. ({str(e)[:160]})")
+            last = e
+    raise last
 
 
 def _parse_json(text):
@@ -93,15 +120,13 @@ def ask_json(role, system, user, image_png=None, temperature=0.7, mime="image/jp
     """Ask the AI for a JSON object. image_png (image bytes, JPEG by default) is optional, for checking a finished post."""
     p = provider(role)
     if p == "gemini":
-        model = _gemini_model("text")
         parts = [{"text": user}]
         if image_png:
             parts.append({"inlineData": {"mimeType": mime, "data": base64.b64encode(image_png).decode()}})
         body = {"systemInstruction": {"parts": [{"text": system}]},
                 "contents": [{"role": "user", "parts": parts}],
                 "generationConfig": {"responseMimeType": "application/json", "temperature": temperature}}
-        out = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                    {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip(), "Content-Type": "application/json"}, body)
+        out = _gemini("text", body)
         try:
             text = "".join(pt.get("text", "") for pt in out["candidates"][0]["content"]["parts"])
         except (KeyError, IndexError):
@@ -127,11 +152,9 @@ def hero_image(prompt):
         return None
     try:
         if p == "gemini":
-            model = _gemini_model("image")
             body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
                     "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": "4:5"}}}
-            out = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                        {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip(), "Content-Type": "application/json"}, body)
+            out = _gemini("image", body)
             for pt in out["candidates"][0]["content"]["parts"]:
                 data = pt.get("inlineData") or pt.get("inline_data")
                 if data:
