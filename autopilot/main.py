@@ -245,7 +245,11 @@ def publish(pending):
     if DRY_RUN or not instagram_ready():
         why = "DRY RUN" if DRY_RUN else "Instagram is not connected yet (IG_USER_ID / IG_ACCESS_TOKEN)"
         print(f"{why}: would publish\n" + "\n".join(urls) + "\n\n" + cap)
-        tg.say(f"{why}, so nothing was posted. This is the caption it would use:\n\n{cap}")
+        if DRY_RUN or not pending.get("ig_missing_told"):  # say it once, not every 15 minutes
+            tg.say(f"{why}, so nothing was posted yet. It will post as soon as it can. Caption:\n\n{cap}")
+            if not DRY_RUN:
+                pending["ig_missing_told"] = True
+                save(PENDING, pending)
         return
     from .instagram import publish as ig_publish
     for u in urls:  # Instagram downloads the images, so they must be public first
