@@ -1,8 +1,26 @@
 {
- "updated_at": "2026-10-12T14:23:12+05:30",
+ "updated_at": "2026-10-12T14:34:36+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
- "pending": null,
- "ready_left": 9,
+ "pending": {
+  "id": "launch-7",
+  "source": "ready",
+  "status": "awaiting_approval",
+  "theme": "scam",
+  "headline": "Same name. Different company.",
+  "subline": "",
+  "cta": "",
+  "text": "Headline: Same name. Different company.\nSupporting line: Clone firms copy a regulated broker's name, logo and licence number. Match the website to the register.\nFooter: Spot the clone before it spots you.",
+  "created_at": "2026-10-12T14:34:34+05:30",
+  "approved_at": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "kind": "single",
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-7-same-name/slide-01.jpg"
+  ],
+  "publishes_at": null
+ },
+ "ready_left": 8,
  "recent": []
 }
