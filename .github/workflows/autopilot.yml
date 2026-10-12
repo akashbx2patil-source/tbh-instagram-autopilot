@@ -54,6 +54,7 @@ jobs:
       IG_USER_ID: ${{ secrets.IG_USER_ID }}
       IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
       POST_AT: ${{ vars.POST_AT || '18:30' }}
+      LISTEN_MINUTES: ${{ vars.LISTEN_MINUTES || '12' }}
       DRY_RUN: ${{ inputs.dry_run || 'false' }}
       DECISION: ${{ (inputs.action == 'approve' || inputs.action == 'reject') && inputs.action || '' }}
       DECISION_POST_ID: ${{ inputs.post_id }}

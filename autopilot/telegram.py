@@ -75,10 +75,10 @@ def close_buttons(message_id, note):
     say(note)
 
 
-def updates(offset):
+def updates(offset, wait=0):
     """New decisions since `offset`. Returns (list of events, next offset).
     Events: {"kind": "approve"|"reject", "post_id": ...} or {"kind": "text", "text": ...}."""
-    res = _call("getUpdates", offset=offset, timeout=0, allowed_updates=["message", "callback_query"])
+    res = _call("getUpdates", offset=offset, timeout=wait, allowed_updates=["message", "callback_query"])
     events, nxt = [], offset
     for u in res:
         nxt = max(nxt, u["update_id"] + 1)

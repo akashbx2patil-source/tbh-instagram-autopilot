@@ -29,7 +29,7 @@ READY, REJECTED, STATUS = DATA / "ready.json", DATA / "rejected.json", DATA / "s
 TZ = ZoneInfo(os.environ.get("TIMEZONE") or "Asia/Kolkata")
 POST_AT = os.environ.get("POST_AT") or "18:30"
 MAX_PER_DAY = int(os.environ.get("MAX_POSTS_CREATED_PER_DAY") or "4")
-REASON_WAIT_MIN = 20
+LISTEN_MIN = float(os.environ.get("LISTEN_MINUTES") or "0")
 DRY_RUN = (os.environ.get("DRY_RUN") or "false").lower() == "true"
 
 
@@ -200,10 +200,11 @@ def _reject(pending, state, reason="", by="phone"):
                 "reason": reason, "at": iso(), "by": by})
     save(REJECTED, rej[-100:])
     if pending.get("telegram_message_id"):
-        tg.close_buttons(pending["telegram_message_id"], f"Rejected {pending['id']}." + (
-            "" if reason else " Reply with what to change (or 'skip') and I'll make a new one."))
+        tg.close_buttons(pending["telegram_message_id"], f"Rejected {pending['id']}. Making a new one now (about a minute)." + (
+            "" if reason else "\nTip: send /reject followed by what to change, e.g. '/reject too negative', and I'll use it."))
     PENDING.unlink(missing_ok=True)
-    state["replace_after"] = iso() if reason else iso(now() + dt.timedelta(minutes=REASON_WAIT_MIN))
+    state["replace_after"] = iso()  # make the replacement straight away
+    state["last_rejected"] = pending["id"]
 
 
 def _approve(pending, by="phone"):
@@ -280,19 +281,22 @@ def _status_text():
     return f"{p['id']} is {p['status'].replace('_', ' ')}: {head}"
 
 
-def check():
+def _pass(long_poll=0):
+    """Read new decisions, act on them, make replacements, publish if due. Returns True if anything changed."""
     state, pending = load(STATE, {}), load(PENDING, None)
+    before = json.dumps([state, pending, load(POSTED, [])], sort_keys=True)
     events = []
-    decision = (os.environ.get("DECISION") or "").strip().lower()  # from the admin panel / workflow button
+    decision = (os.environ.pop("DECISION", "") or "").strip().lower()  # from the admin panel / workflow button (once)
     if decision in ("approve", "reject"):
         events.append({"kind": decision, "post_id": os.environ.get("DECISION_POST_ID") or (pending or {}).get("id"),
                        "reason": os.environ.get("REASON", ""), "by": "admin"})
     if tg.ready():
-        evs, state["tg_offset"] = tg.updates(state.get("tg_offset", 0))
+        evs, state["tg_offset"] = tg.updates(state.get("tg_offset", 0), long_poll)
         events += evs
+    save(STATE, state)
     want_new = False
     for e in events:
-        pending = load(PENDING, None)
+        state, pending = load(STATE, {}), load(PENDING, None)
         if e["kind"] in ("approve", "reject"):
             if not pending or e.get("post_id") != pending["id"]:
                 tg.say(f"That button was for {e.get('post_id')}, which is no longer waiting. " + _status_text())
@@ -301,11 +305,12 @@ def check():
                 _approve(pending, e.get("by", "phone"))
             else:
                 _reject(pending, state, e.get("reason", ""), e.get("by", "phone"))
+                save(STATE, state)
             continue
         text = e["text"]
         low = text.lower()
         if low.startswith("/start"):
-            tg.say("Hi. I'll send each new TrustBrokerHub post here for approval. Commands: /status, /new, /approve, /reject <reason>.")
+            tg.say("Hi. I'll send each new TrustBrokerHub post here for approval. Commands: /status, /new, /approve, /reject <what to change>.")
         elif low.startswith("/status"):
             tg.say(_status_text())
         elif low.startswith("/new"):
@@ -314,18 +319,17 @@ def check():
             _approve(pending)
         elif low.startswith("/reject") and pending:
             _reject(pending, state, text[7:].strip())
-        elif state.get("replace_after") and not pending:  # a reason after tapping Reject
+            save(STATE, state)
+        elif state.get("last_rejected"):  # a note after tapping Reject: keep it so future posts learn from it
             rej = load(REJECTED, [])
-            if rej and low not in ("skip", "no", "none"):
-                rej[-1]["reason"] = text
+            if rej and rej[-1]["id"] == state["last_rejected"] and low not in ("skip", "no", "none"):
+                rej[-1]["reason"] = (rej[-1].get("reason", "") + " " + text).strip()
                 save(REJECTED, rej)
-            state["replace_after"] = iso()
-            tg.say("Noted. Making a new post now.")
+                tg.say("Noted. I'll keep that in mind for the next posts.")
         else:
-            tg.say("I only understand the buttons, /status, /new, /approve and /reject <reason>.")
-    save(STATE, state)
+            tg.say("I understand the buttons, /status, /new, /approve and /reject <what to change>.")
 
-    pending = load(PENDING, None)
+    state, pending = load(STATE, {}), load(PENDING, None)
     due = state.get("replace_after") and now() >= dt.datetime.fromisoformat(state["replace_after"])
     if not pending and (want_new or due):
         state.pop("replace_after", None)
@@ -337,6 +341,45 @@ def check():
     if pending and pending["status"] == "approved" and _time_to_post():
         publish(pending)
     write_status()
+    return json.dumps([load(STATE, {}), load(PENDING, None), load(POSTED, [])], sort_keys=True) != before
+
+
+def _git_save(msg):
+    """Inside GitHub Actions: commit and push data/ and media/ now, so nothing is lost mid-run."""
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        return
+    import subprocess
+    run = lambda *a: subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True)
+    run("config", "user.name", "instagram-autopilot")
+    run("config", "user.email", "actions@users.noreply.github.com")
+    run("add", "data", "media")
+    if run("diff", "--cached", "--quiet").returncode != 0:
+        run("commit", "-q", "-m", msg)
+        run("pull", "-q", "--rebase")
+        if run("push", "-q").returncode != 0:
+            print("::warning::push failed; will retry at the end of the run")
+
+
+def listen(minutes=None):
+    """Stay awake for a few minutes so Approve / Reject taps are handled within seconds."""
+    minutes = LISTEN_MIN if minutes is None else minutes
+    end = time.time() + minutes * 60
+    while time.time() < end and tg.ready():
+        p, st = load(PENDING, None), load(STATE, {})
+        waiting = (p and p["status"] == "awaiting_approval") or st.get("replace_after")
+        h, m = map(int, POST_AT.split(":"))
+        post_soon = p and p["status"] == "approved" and \
+            now() + dt.timedelta(seconds=end - time.time()) >= now().replace(hour=h, minute=m, second=0)
+        if not (waiting or post_soon):
+            break
+        if _pass(long_poll=25):
+            _git_save(f"Autopilot {now():%Y-%m-%d %H:%M}")
+
+
+def check():
+    _pass()
+    _git_save(f"Autopilot {now():%Y-%m-%d %H:%M}")
+    listen()
 
 
 # ---------- setup helpers ----------
@@ -399,4 +442,9 @@ if __name__ == "__main__":
     if cmd == "setup":
         setup(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")
     else:
-        {"create": create, "check": check, "refresh-token": refresh_token, "status": status}[cmd]()
+        if cmd == "create":
+            create()
+            _git_save(f"Autopilot {now():%Y-%m-%d %H:%M}")
+            listen()
+        else:
+            {"check": check, "refresh-token": refresh_token, "status": status}[cmd]()
