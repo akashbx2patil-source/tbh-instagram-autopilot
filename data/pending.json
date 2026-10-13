@@ -1,0 +1,27 @@
+{
+ "id": "launch-6",
+ "source": "ready",
+ "kind": "single",
+ "theme": "scam",
+ "topic": "Easy to deposit. Hard to withdraw?",
+ "headline": "Easy to deposit. Hard to withdraw?",
+ "subline": "",
+ "cta": "",
+ "text": "Headline: Easy to deposit. Hard to withdraw?\nSupporting line: Withdrawal complaints are the most common red flag in trader reviews. Read them first.\nFooter: Read the reviews before you deposit.",
+ "files": [
+  "assets/ready/launch-6-withdraw/slide-01.jpg"
+ ],
+ "warnings": [],
+ "caption": "Deposits are instant. Withdrawals are where brokers show who they are. Delays, extra documents, \"bonus terms\" that lock your balance. Read the withdrawal reviews first.",
+ "hashtags": [
+  "#forex",
+  "#withdrawal",
+  "#brokerreview",
+  "#tradingsafety",
+  "#scamalert",
+  "#duediligence"
+ ],
+ "status": "awaiting_approval",
+ "created_at": "2026-10-13T16:18:05+05:30",
+ "telegram_message_id": 21
+}
