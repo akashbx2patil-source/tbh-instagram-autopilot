@@ -1,0 +1,27 @@
+{
+ "id": "launch-5",
+ "source": "ready",
+ "kind": "single",
+ "theme": "reg",
+ "topic": "A licence badge proves nothing.",
+ "headline": "A licence badge proves nothing.",
+ "subline": "",
+ "cta": "",
+ "text": "Headline: A licence badge proves nothing.\nSupporting line: Anyone can paste one on a website. The regulator's register is the only proof.\nFooter: Check the register, not the badge.",
+ "files": [
+  "assets/ready/launch-5-licence-badge/slide-01.jpg"
+ ],
+ "warnings": [],
+ "caption": "A regulator's logo on a website is an image. Anyone can paste one. The only proof is the regulator's own register, and it takes two minutes to search.",
+ "hashtags": [
+  "#forexscam",
+  "#brokerreview",
+  "#fca",
+  "#asic",
+  "#forex",
+  "#duediligence"
+ ],
+ "status": "awaiting_approval",
+ "created_at": "2026-10-14T14:21:55+05:30",
+ "telegram_message_id": 24
+}

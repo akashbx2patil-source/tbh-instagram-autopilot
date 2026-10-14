@@ -1,31 +1,44 @@
 {
- "updated_at": "2026-10-13T23:09:27+05:30",
+ "updated_at": "2026-10-14T14:21:58+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
  "writer": "auto",
  "checker": "auto",
- "pending": null,
+ "pending": {
+  "id": "launch-5",
+  "source": "ready",
+  "kind": "single",
+  "status": "awaiting_approval",
+  "theme": "reg",
+  "topic": "A licence badge proves nothing.",
+  "headline": "A licence badge proves nothing.",
+  "subline": "",
+  "cta": "",
+  "text": "Headline: A licence badge proves nothing.\nSupporting line: Anyone can paste one on a website. The regulator's register is the only proof.\nFooter: Check the register, not the badge.",
+  "caption": "A regulator's logo on a website is an image. Anyone can paste one. The only proof is the regulator's own register, and it takes two minutes to search.",
+  "hashtags": [
+   "#forexscam",
+   "#brokerreview",
+   "#fca",
+   "#asic",
+   "#forex",
+   "#duediligence"
+  ],
+  "created_at": "2026-10-14T14:21:55+05:30",
+  "approved_at": null,
+  "approved_by": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "edit_rev": null,
+  "edit_error": null,
+  "idea": null,
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-5-licence-badge/slide-01.jpg"
+  ],
+  "publishes_at": null
+ },
  "queue": [
-  {
-   "id": "launch-5",
-   "folder": "assets/ready/launch-5-licence-badge",
-   "theme": "reg",
-   "title": "A licence badge proves nothing.",
-   "text": "Headline: A licence badge proves nothing.\nSupporting line: Anyone can paste one on a website. The regulator's register is the only proof.\nFooter: Check the register, not the badge.",
-   "caption": "A regulator's logo on a website is an image. Anyone can paste one. The only proof is the regulator's own register, and it takes two minutes to search.",
-   "hashtags": [
-    "#forexscam",
-    "#brokerreview",
-    "#fca",
-    "#asic",
-    "#forex",
-    "#duediligence"
-   ],
-   "images": [
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-5-licence-badge/slide-01.jpg"
-   ]
-  },
   {
    "id": "carousel-b",
    "folder": "assets/ready/carousel-b-trust-score",
