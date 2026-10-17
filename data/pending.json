@@ -27,7 +27,9 @@
   "#investorprotection",
   "#duediligence"
  ],
- "status": "awaiting_approval",
+ "status": "approved",
  "created_at": "2026-10-16T13:49:46+05:30",
- "telegram_message_id": 35
+ "telegram_message_id": 35,
+ "approved_at": "2026-10-17T15:29:57+05:30",
+ "approved_by": "admin"
 }
