@@ -1,31 +1,44 @@
 {
- "updated_at": "2026-10-17T20:40:03+05:30",
+ "updated_at": "2026-10-18T13:40:13+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
  "writer": "auto",
  "checker": "auto",
- "pending": null,
+ "pending": {
+  "id": "launch-4",
+  "source": "ready",
+  "kind": "single",
+  "status": "awaiting_approval",
+  "theme": "verify",
+  "topic": "Any broker. Checked in seconds.",
+  "headline": "Any broker. Checked in seconds.",
+  "subline": "",
+  "cta": "",
+  "text": "Headline: Any broker. Checked in seconds.\nSupporting line: Regulation, Trust Score, fees and reviews on one screen. Before you deposit.\nButton: Check a broker",
+  "caption": "38,680 brokers. One search. Regulation, Trust Score, fees and reviews on one screen, before any money moves. Link in bio.",
+  "hashtags": [
+   "#forexbroker",
+   "#brokerreview",
+   "#forex",
+   "#duediligence",
+   "#tradingsafety",
+   "#forextrading"
+  ],
+  "created_at": "2026-10-18T13:40:11+05:30",
+  "approved_at": null,
+  "approved_by": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "edit_rev": null,
+  "edit_error": null,
+  "idea": null,
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-4-any-broker/slide-01.jpg"
+  ],
+  "publishes_at": null
+ },
  "queue": [
-  {
-   "id": "launch-4",
-   "folder": "assets/ready/launch-4-any-broker",
-   "theme": "verify",
-   "title": "Any broker. Checked in seconds.",
-   "text": "Headline: Any broker. Checked in seconds.\nSupporting line: Regulation, Trust Score, fees and reviews on one screen. Before you deposit.\nButton: Check a broker",
-   "caption": "38,680 brokers. One search. Regulation, Trust Score, fees and reviews on one screen, before any money moves. Link in bio.",
-   "hashtags": [
-    "#forexbroker",
-    "#brokerreview",
-    "#forex",
-    "#duediligence",
-    "#tradingsafety",
-    "#forextrading"
-   ],
-   "images": [
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-4-any-broker/slide-01.jpg"
-   ]
-  },
   {
    "id": "launch-2",
    "folder": "assets/ready/launch-2-before-you-trust",
