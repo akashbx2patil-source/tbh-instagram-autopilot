@@ -190,7 +190,14 @@ def create(force=False):
     if pending:
         print(f"{pending['id']} is still {pending['status']}; not making a new post.")
         if pending["status"] == "awaiting_approval" and not force:
-            tg.say(f"Reminder: post {pending['id']} is still waiting for your approval (buttons above).")
+            # Re-send the post itself with fresh buttons, so it is at the bottom of the chat, not days up.
+            if pending.get("telegram_message_id"):
+                tg.close_buttons(pending["telegram_message_id"], f"Reminder: {pending['id']} is still waiting. Here it is again:")
+            days = (now() - dt.datetime.fromisoformat(pending["created_at"])).days if pending.get("created_at") else 0
+            _send_for_approval(pending, f"Still waiting for your approval ({pending['id']}"
+                                        + (f", {days} days" if days else "") + "). Nothing posts until you tap Approve.\n\n"
+                                        + (pending.get("headline") or pending.get("topic", "")).replace("\n", " "))
+            save(PENDING, pending)
         return
     today = now().strftime("%Y-%m-%d")
     made = state.get("made", {})
