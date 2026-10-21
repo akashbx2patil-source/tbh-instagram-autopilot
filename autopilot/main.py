@@ -500,9 +500,12 @@ def listen(minutes=None):
 
 
 def check():
-    _pass()
+    changed = _pass()
     _git_save(f"Autopilot {now():%Y-%m-%d %H:%M}")
-    listen()
+    # Stay awake only when something just happened (a new post, a tap). Quiet checks end at once,
+    # so frequent pings from an outside timer (cron-job.org) stay cheap.
+    if changed or os.environ.get("ALWAYS_LISTEN") == "true":
+        listen()
 
 
 # ---------- setup helpers ----------
