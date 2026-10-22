@@ -1,31 +1,44 @@
 {
- "updated_at": "2026-10-21T19:32:47+05:30",
+ "updated_at": "2026-10-22T14:15:50+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
  "writer": "auto",
  "checker": "auto",
- "pending": null,
+ "pending": {
+  "id": "launch-2",
+  "source": "ready",
+  "kind": "single",
+  "status": "awaiting_approval",
+  "theme": "verify",
+  "topic": "Before you trust a broker…",
+  "headline": "Before you trust a broker…",
+  "subline": "",
+  "cta": "",
+  "text": "Headline: Before you trust a broker...\nSupporting line: Check the details. Check the licence. Check the reputation.\nFooter: Research. Compare. Decide.",
+  "caption": "Before you deposit, three checks take ten minutes. Is the licence real on the regulator's own register. Do the company details match. What do verified traders say about withdrawals.",
+  "hashtags": [
+   "#forex",
+   "#brokerreview",
+   "#tradingsafety",
+   "#duediligence",
+   "#forextrading",
+   "#investorprotection"
+  ],
+  "created_at": "2026-10-22T14:15:47+05:30",
+  "approved_at": null,
+  "approved_by": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "edit_rev": null,
+  "edit_error": null,
+  "idea": null,
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-2-before-you-trust/slide-01.jpg"
+  ],
+  "publishes_at": null
+ },
  "queue": [
-  {
-   "id": "launch-2",
-   "folder": "assets/ready/launch-2-before-you-trust",
-   "theme": "verify",
-   "title": "Before you trust a broker…",
-   "text": "Headline: Before you trust a broker...\nSupporting line: Check the details. Check the licence. Check the reputation.\nFooter: Research. Compare. Decide.",
-   "caption": "Before you deposit, three checks take ten minutes. Is the licence real on the regulator's own register. Do the company details match. What do verified traders say about withdrawals.",
-   "hashtags": [
-    "#forex",
-    "#brokerreview",
-    "#tradingsafety",
-    "#duediligence",
-    "#forextrading",
-    "#investorprotection"
-   ],
-   "images": [
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-2-before-you-trust/slide-01.jpg"
-   ]
-  },
   {
    "id": "carousel-a",
    "folder": "assets/ready/carousel-a-meet-tbh",
