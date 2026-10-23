@@ -1,38 +1,51 @@
 {
- "updated_at": "2026-10-22T16:56:16+05:30",
+ "updated_at": "2026-10-23T14:11:29+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
  "writer": "auto",
  "checker": "auto",
- "pending": null,
+ "pending": {
+  "id": "carousel-a",
+  "source": "ready",
+  "kind": "carousel",
+  "status": "awaiting_approval",
+  "theme": "verify",
+  "topic": "Meet TrustBrokerHub",
+  "headline": "Meet TrustBrokerHub",
+  "subline": "",
+  "cta": "",
+  "text": "Carousel, 6 slides: 38,680 brokers. Which one do you trust? / 38,680 brokers and exchanges in one database / 105 regulators across 140 countries / A Trust Score on every broker / Scam alerts, trader reviews, side-by-side compare / Look them up before you pay them.",
+  "caption": "38,680 brokers and exchanges. One question before you deposit: who are you actually dealing with?\n\nTrustBrokerHub checks forex brokers, crypto exchanges and prop firms against 105 regulators in 140 countries. Every broker gets a transparent Trust Score, and scam alerts, reviews and a compare tool sit in one place.\n\nSearch any broker before you deposit. Link in bio.",
+  "hashtags": [
+   "#forex",
+   "#forexbroker",
+   "#brokerreview",
+   "#investorprotection",
+   "#scamalert",
+   "#duediligence",
+   "#tradingsafety",
+   "#cryptoexchange"
+  ],
+  "created_at": "2026-10-23T14:11:26+05:30",
+  "approved_at": null,
+  "approved_by": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "edit_rev": null,
+  "edit_error": null,
+  "idea": null,
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-01.jpg",
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-02.jpg",
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-03.jpg",
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-04.jpg",
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-05.jpg",
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-06.jpg"
+  ],
+  "publishes_at": null
+ },
  "queue": [
-  {
-   "id": "carousel-a",
-   "folder": "assets/ready/carousel-a-meet-tbh",
-   "theme": "verify",
-   "title": "Meet TrustBrokerHub",
-   "text": "Carousel, 6 slides: 38,680 brokers. Which one do you trust? / 38,680 brokers and exchanges in one database / 105 regulators across 140 countries / A Trust Score on every broker / Scam alerts, trader reviews, side-by-side compare / Look them up before you pay them.",
-   "caption": "38,680 brokers and exchanges. One question before you deposit: who are you actually dealing with?\n\nTrustBrokerHub checks forex brokers, crypto exchanges and prop firms against 105 regulators in 140 countries. Every broker gets a transparent Trust Score, and scam alerts, reviews and a compare tool sit in one place.\n\nSearch any broker before you deposit. Link in bio.",
-   "hashtags": [
-    "#forex",
-    "#forexbroker",
-    "#brokerreview",
-    "#investorprotection",
-    "#scamalert",
-    "#duediligence",
-    "#tradingsafety",
-    "#cryptoexchange"
-   ],
-   "images": [
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-01.jpg",
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-02.jpg",
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-03.jpg",
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-04.jpg",
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-05.jpg",
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/carousel-a-meet-tbh/slide-06.jpg"
-   ]
-  },
   {
    "id": "launch-1",
    "folder": "assets/ready/launch-1-top-broker",

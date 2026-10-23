@@ -3,7 +3,7 @@
  "next_ai_index": 1,
  "telegram_chat_id": "8918746028",
  "made": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "count": 1
  },
  "last_rejected": "launch-7",
@@ -12,6 +12,7 @@
   "launch-5",
   "carousel-b",
   "launch-4",
-  "launch-2"
+  "launch-2",
+  "carousel-a"
  ]
 }
