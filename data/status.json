@@ -1,32 +1,44 @@
 {
- "updated_at": "2026-10-24T21:47:00+05:30",
+ "updated_at": "2026-10-25T14:04:27+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
  "writer": "auto",
  "checker": "auto",
- "pending": null,
- "queue": [
-  {
-   "id": "launch-1",
-   "folder": "assets/ready/launch-1-top-broker",
-   "theme": "verify",
-   "title": "Top broker. According to who?",
-   "text": "Headline: Top broker. According to who?\nSupporting line: Not every broker ranking tells the full story.\nFooter: Look beyond the ranking.",
-   "caption": "\"Top broker\" is a claim, not a fact. Most lists never say who paid for the position or what was measured. Before a ranking convinces you, ask what sits behind it.",
-   "hashtags": [
-    "#forexbroker",
-    "#brokerreview",
-    "#forex",
-    "#tradingsafety",
-    "#duediligence",
-    "#forextrading"
-   ],
-   "images": [
-    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-1-top-broker/slide-01.jpg"
-   ]
-  }
- ],
+ "pending": {
+  "id": "launch-1",
+  "source": "ready",
+  "kind": "single",
+  "status": "awaiting_approval",
+  "theme": "verify",
+  "topic": "Top broker. According to who?",
+  "headline": "Top broker. According to who?",
+  "subline": "",
+  "cta": "",
+  "text": "Headline: Top broker. According to who?\nSupporting line: Not every broker ranking tells the full story.\nFooter: Look beyond the ranking.",
+  "caption": "\"Top broker\" is a claim, not a fact. Most lists never say who paid for the position or what was measured. Before a ranking convinces you, ask what sits behind it.",
+  "hashtags": [
+   "#forexbroker",
+   "#brokerreview",
+   "#forex",
+   "#tradingsafety",
+   "#duediligence",
+   "#forextrading"
+  ],
+  "created_at": "2026-10-25T14:04:25+05:30",
+  "approved_at": null,
+  "approved_by": null,
+  "warnings": [],
+  "canva_edit_url": null,
+  "edit_rev": null,
+  "edit_error": null,
+  "idea": null,
+  "images": [
+   "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/assets/ready/launch-1-top-broker/slide-01.jpg"
+  ],
+  "publishes_at": null
+ },
+ "queue": [],
  "ideas": [],
  "recent": [
   {
