@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-31T15:27:49+05:30",
+ "updated_at": "2026-10-31T15:28:17+05:30",
  "post_at": "18:30",
  "timezone": "Asia/Kolkata",
  "paused": false,
@@ -9,7 +9,7 @@
   "id": "ai0001",
   "source": "ai",
   "kind": "single",
-  "status": "awaiting_approval",
+  "status": "approved",
   "theme": "basics",
   "topic": "Standard lot size risk misunderstanding",
   "headline": "ONE LOT IS NOT\nONE DOLLAR OF\nTRADING RISK.",
@@ -19,8 +19,8 @@
   "caption": null,
   "hashtags": null,
   "created_at": "2026-10-31T15:27:47+05:30",
-  "approved_at": null,
-  "approved_by": null,
+  "approved_at": "2026-10-31T15:28:16+05:30",
+  "approved_by": "phone",
   "warnings": [],
   "canva_edit_url": "https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzk2MDMyNTA4NjkwfQ..j6clt9zMaPtzH5D5.BA8mdfmtbvDmCloT3_e038mtYV1Jw4HGFB-ZodNmH_5f3jAG0HLwUpjrG6QF9W4TR4V7YN5n_3E008EhjjuGf0bzv7RgVxW2lNpuB1Fivh4a0D8.CAXkOIY1PcdWeV1p3L70fw/edit?utm_source=OC-AaEsxlR5fh3v&utm_medium=referral&utm_term=20d154a6-a245-44b5-8029-2b061284d776&utm_campaign=public_api_autofill_design_clicked_hyperlink",
   "edit_rev": null,
@@ -29,7 +29,7 @@
   "images": [
    "https://raw.githubusercontent.com/akashbx2patil-source/tbh-instagram-autopilot/main/media/2026-10-31-ai0001/slide-01.jpg"
   ],
-  "publishes_at": null
+  "publishes_at": "18:30"
  },
  "queue": [],
  "ideas": [],
