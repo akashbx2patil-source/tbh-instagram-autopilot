@@ -47,5 +47,12 @@
   "message": "HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=180)",
   "hint": "",
   "run": "https://github.com/akashbx2patil-source/tbh-instagram-autopilot/actions/runs/41328234045"
+ },
+ {
+  "at": "2026-11-16T17:17:57+05:30",
+  "step": "create",
+  "message": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))",
+  "hint": "",
+  "run": "https://github.com/akashbx2patil-source/tbh-instagram-autopilot/actions/runs/43860555341"
  }
 ]
