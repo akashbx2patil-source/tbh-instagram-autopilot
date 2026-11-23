@@ -54,5 +54,12 @@
   "message": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))",
   "hint": "",
   "run": "https://github.com/akashbx2patil-source/tbh-instagram-autopilot/actions/runs/43860555341"
+ },
+ {
+  "at": "2026-11-23T18:49:00+05:30",
+  "step": "create",
+  "message": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))",
+  "hint": "",
+  "run": "https://github.com/akashbx2patil-source/tbh-instagram-autopilot/actions/runs/45182108483"
  }
 ]
